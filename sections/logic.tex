@@ -1,0 +1,174 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+
+
+\subsection{Formal languages}
+
+\begin{definition}[Formal language]
+    A formal language is described by
+    \begin{enumerate}
+        \item set of symbols
+        \item rules to form wffs
+        \item translations between english and the formal language
+    \end{enumerate}
+\end{definition}
+
+
+\subsection{Expressions and well formed formulas}
+
+
+\begin{definition}[Symbols]
+    There are two types of symbols
+    \begin{enumerate}
+        \item logical: meaning does not change
+        \begin{itemize}
+            \item connective
+            \item punctuation
+        \end{itemize}
+        \item non logical: meaning is not fixed
+        \begin{itemize}
+            \item sentences
+        \end{itemize}
+    \end{enumerate}
+\end{definition}
+\begin{definition}[Expression]
+    An expression is an ordered sequence of symbols
+\end{definition}
+\begin{definition}[Recursive definition wffs]
+    A wff meets one of the following conditions:
+    \begin{enumerate}
+        \item sentences symbols are wffs
+        \item $\neg\alpha$, $\alpha\wedge\beta$, $\alpha\vee\beta$, $\alpha\leftrightarrow\beta$, $\alpha\rightarrow\beta$ are wffs whenever $\alpha, \beta$ are wffs
+    \end{enumerate}
+\end{definition}
+\begin{definition}[Construction sequence definition wffs]
+    A wff is the last expression of a sequence of expressions $<\varepsilon_1,\dots,\varepsilon_n>$ where
+    \begin{enumerate}
+        \item $\varepsilon_i$ is a sentence
+        \item $\varepsilon_i = E_\neg(\varepsilon_j)$ where $i>j$
+        \item $\varepsilon_i = E_\blacksquare(\varepsilon_j, \varepsilon_k)$ where $i>j,k$ and $\blacksquare\in \{ \wedge, \vee, \rightarrow, \leftrightarrow \}$
+    \end{enumerate}
+\end{definition}
+
+
+\subsection{Truth assignments}
+
+
+\begin{definition}[Truth assignment]
+    A truth assignment $v$ for a set $S$ of sentences is a function $S\rightarrow\{T,F\}$
+\end{definition}
+\begin{definition}[Truth assignment extension]
+    The extension $\bar{v}$ of a truth assignment $v$ is a function $\bar{S}\rightarrow\{T,F\}$ ($\bar{S}$ the set of wff built from $S$) such that
+    \begin{enumerate}
+        \item $\bar{v}(A) = v(A)$ for $A$ sentence
+        \item $\bar{v}(A\wedge B)$, $\bar{v}(A\vee B)$, $\bar{v}(A\leftrightarrow B)$, $\bar{v}(A\rightarrow B)$ meets their truth tables
+    \end{enumerate}
+\end{definition}
+\begin{definition}[Truth assignment satisfies a wff]
+    A truth assignment satisfies a wff $\phi$ iff $\bar{v}(\phi) = T$
+\end{definition}
+\begin{definition}[Satisfiable set of wffs]
+    A set of wffs is satisfiable iff exists truth assignment that satisfies all wffs of the set
+\end{definition}
+\begin{definition}[Tautologically implies]
+    A set of wff $\Sigma$ tautologically implies $\tau$ written as $\Sigma\models\tau$ iff every truth assignment $v:S_{\Sigma, \tau} \rightarrow \{T,F\}$ that satisfies $\Sigma$ also satisfies $\tau$ where $S_{\Sigma, \tau}$ is the set of sentences in $\Sigma$ and $\tau$
+\end{definition}
+\begin{definition}[Tautologically equivalent]
+    It's said that $\sigma$ is tautologically equivalent to $\tau$ iff $\sigma\models\tau$ and $\tau\models\sigma$
+\end{definition}
+\begin{definition}[Tautology]
+    It's said that $\tau$ is a tautology iff $\emptyset\models\tau$
+\end{definition}
+\begin{definition}[Equivalent sets of wffs]
+    Two sets of wffs $\Sigma, \Pi$ are equivalent iff are tautologically equivalent.
+\end{definition}
+\begin{definition}[Independent set of wffs]
+    A sets of wffs is independent iff no member of it is tautologically implied by the others 
+\end{definition}
+
+
+\subsection{Induction and recursion}
+
+
+\begin{definition}[Closed set under set of functions]
+    $S$ is closed under $\mathcal{F}$ iff $\alpha_1,\dots,\alpha_n\in S$, $f\in\mathcal{F}$ then $f(\alpha_1,\dots,\alpha_n)\in S$
+\end{definition}
+\begin{definition}[Inductive set on a basis under a set of functions]
+    $S$ is inductive on $B$ under $\mathcal{F}$ iff  $B\subseteq S$ and $S$ is closed under $\mathcal{F}$
+\end{definition}
+\begin{definition}[Freely generated set]
+    $C$ is freely generated from $B$ by $\mathcal{F}$ iff $\forall f\in\mathcal{F}$ $f$ is bijective and $\forall f,g\in \mathcal{F}$ $\mathcal{R}_{f|_C}, \mathcal{R}_{g|_C}, B$ are pairwise disjoint
+\end{definition}
+\begin{definition}[Generated set from a basis under a set of functions]
+    $C$ is generated from $B$ under $\mathcal{F}$ iff the following equivalent are true
+    \begin{enumerate}
+        \item $C=\bigcup_n C_n$ where $C_n$ is the set of expressions of lenght $n$ built from $B$ under $\mathcal{F}$
+        \item $C=\bigcap S$ where $S$ is inductive on $B$ under $\mathcal{F}$
+    \end{enumerate}
+\end{definition}
+\begin{theorem}[Induction principle]
+    Let $C$ generated from $B$ by $\mathcal{F}$, then if $B\subseteq S \subseteq C$ and $S$ is closed under $\mathcal{F}$ then $S=C$.
+\end{theorem}
+\begin{corollary}[Induction principle for wffs]
+    If a set of wff $S$ contains any sentence and is closed under sentential connectives then $S$ is the set of wff.
+\end{corollary}
+\begin{theorem}[Recursion theorem]
+    If $C$ is freely generated from $B$ by $\mathcal{F}$, $h:B\rightarrow V$ and $t:\mathcal{F}\rightarrow\mathcal{G}$ then exists unique function $\bar{h}: C\rightarrow V$ such that
+    \begin{enumerate}
+        \item $\bar{h}|_B = h|_B$
+        \item $\bar{h}(f(x_1,\dots,x_n)) = t(f)(\bar{h}(x_1),\dots,\bar{h}(x_n))$
+    \end{enumerate}
+\end{theorem}
+
+
+\subsection{Boolean functions}
+
+
+\begin{definition}[k-boolean function]
+    A k-boolean function is a function $\mathcal{B}:\{T,F\}^k\rightarrow\{T,F\}$
+\end{definition}
+\begin{theorem}
+    Every wff $\alpha$ defines a boolean function $\mathcal{B}_\alpha$
+\end{theorem}
+\begin{theorem}
+    $\alpha\models\beta$ iff $\mathcal{B}_\alpha(X)\le\mathcal{B}_\beta(X)$
+\end{theorem}
+\begin{theorem}
+    $\models\alpha$ iff $\mathcal{B}_\alpha(X)=T$
+\end{theorem}
+\begin{definition}[Disjunctive normal form]
+    A wff $\alpha$ is in disjunctive normal form iff
+    $$
+    \alpha=\gamma_1\vee\cdots\vee\gamma_n
+    $$
+    where each $\gamma_i=\beta_{i1}\wedge\cdots\wedge\beta_{ik}$ and $\beta_{ij}$ is a sentence or negative of sentence
+\end{definition}
+\begin{definition}[Conjunctive normal form]
+    A wff $\alpha$ is in conjunctive normal form iff
+    $$
+    \alpha=\gamma_1\wedge\cdots\wedge\gamma_n
+    $$
+    where each $\gamma_i=\beta_{i1}\vee\cdots\vee\beta_{ik}$ and $\beta_{ij}$ is a sentence or negative of sentence
+\end{definition}
+\begin{theorem}
+    Every boolean function has an equivalent wff that can be found constructing the disjunctive normal form from the boolean function truth table
+\end{theorem}
+\begin{definition}[Complete set of connectives]
+    A set of connectives is complete iff any boolean function is equivalent to a wff using only those connectives
+\end{definition}
+\begin{definition}[Substitution]
+    $\phi_\blacksquare^A$ is defined as the resulting wff from substituting $A$ by $\blacksquare$
+\end{definition}
+\begin{definition}[Resolution]
+    $\phi_*^A = \phi_\top^A \vee \phi_\bot^A$
+\end{definition}
+\begin{theorem}
+    The following three statements are true
+    \begin{itemize}
+        \item $\phi\models\phi_*^A$
+        \item if $\phi\models\varphi$ and $A$ does not appear in $\varphi$ then $\phi_*^A\models\varphi$ is satisfiable
+        \item $\phi$ is satisfiable iff $\phi_*^A$ is satisfiable
+    \end{itemize}
+\end{theorem}
+\end{document}

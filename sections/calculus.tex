@@ -1,0 +1,88 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+
+
+\subsection{Real axioms}
+
+
+\begin{axiom}[Associative addition]\end{axiom}
+\begin{axiom}[Associative multiplication]\end{axiom}
+\begin{axiom}[Closure addition]\end{axiom}
+\begin{axiom}[Closure multiplication]\end{axiom}
+\begin{axiom}[Commutative addition]\end{axiom}
+\begin{axiom}[Commutative multiplication]\end{axiom}
+\begin{axiom}[Identity addition]\end{axiom}
+\begin{axiom}[Identity multiplication]\end{axiom}
+\begin{axiom}[Inverse addition]\end{axiom}
+\begin{axiom}[Inverse multiplication]\end{axiom}
+\begin{axiom}[Distributive law]\end{axiom}
+\begin{axiom}[Trichotomy]
+For any pair of numbers $x,y$ one and only one holds of $x=y$, $x<y$, $x>y$
+\end{axiom}
+\begin{axiom}[Least upper bound]
+If $A$ is not an empty set and has an upper bound, then it has a minimum upper bound.
+\end{axiom}
+    
+
+\subsection{Limits and continuity}
+
+
+\begin{definition}[Limit]
+    It's said that $L$ is the limit of $f$ as $x$ approaches $a$ written as
+    $$
+    \lim_{x\rightarrow a}f(x) = L
+    $$
+    when $\forall \varepsilon >0\ \exists\delta>0: 0<|x-a|<\delta \rightarrow |f(x) - L| < \epsilon
+    $
+\end{definition}
+\begin{definition}[Continuity]
+    It's said that $f$ is continuous in $a$ when
+    $$
+    \lim_{x\rightarrow a} f(x) = f(a)
+    $$
+\end{definition}
+\begin{theorem}[Intermediate value theorem]
+    Let $f\in C[a,b]$ and $f(a) < 0 < f(b)$ then $\exists x\in [a,b]: f(x)=0$.
+\end{theorem}
+\begin{proof}
+    Let $A = \{ x : f(y) < 0, y \in [a, x] \}$. $A$ is an upper bounded non empty set, therefore supreme exists. By reduction to the absurd, $f(\sup A) \neq 0$ cannot be true.
+\end{proof}
+\begin{theorem}[Bounded theorem]
+    Let $f\in C[a,b]$, then $\exists N \ \forall x\in[a,b]: f(x)\leq N$.
+\end{theorem}
+\begin{proof}
+    Let $A = \{ x : a\le x\le b, \  f([a, x])<N\}$. $A$ is an upper bounded non empty set, therefore supreme exists. By reduction to the absurd, $\sup A \neq b$ cannot be true.
+\end{proof}
+\begin{theorem}[Extreme value theorem]
+    Let $f\in C[a,b]$, then $\exists y\in [a,b] \ \forall x\in [a,b]: f(x) \leq f(y)$.
+\end{theorem}
+\begin{proof}
+    Let $A = \{ f(x) : x\in [a,b] \}$. By bounded theorem $A$ is an upper bounded non empty set, therefore supreme exists. By reduction to the absurd $\sup A \neq f(y), y\in [a,b]$ cannot be true.
+\end{proof}
+\begin{theorem}[Archimedean property]
+    $\forall \epsilon > 0 \ \exists n\in N: \epsilon > \frac{1}{n}$
+\end{theorem}
+\begin{proof}
+    Suppose $N$ is upper bounded. Then $\alpha = \sup N$ means $\forall n\in N: \alpha \ge n$, and $\forall n\in N: \alpha \ge n+1$. But then $\alpha - 1$ is an upper bound and $\alpha$ cannot be the supreme. Therefore $N$ is not upper bound
+\end{proof}
+
+
+\subsection{Derivatives}
+
+\begin{definition}[Differentiable]
+    It's said that $f$ is differentiable in $a$ when the limit
+    $$
+    \lim_{h\rightarrow 0} \frac{f(a+h)-f(a)}{h} = \lim_{x\rightarrow a} \frac{f(x)-f(a)}{x-a}
+    $$
+    exists.
+\end{definition}
+\begin{theorem}[Differentiability implies continuity]
+    If a function $f$ is differentiable in $a$, then it is continuous at $a$. But the converse is not generally true.
+\end{theorem}
+\begin{proof}
+    Find
+    $$\lim_{h \rightarrow 0} \frac{f(a+h) - f(a)}{h}\cdot h$$
+\end{proof}
+
+\end{document}
