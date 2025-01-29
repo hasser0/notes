@@ -1,0 +1,27 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+\subsection{Algebra of linear transformations}
+Let $V$ and $W$ be vector spaces, we denote $L(V,W)$ as the set of linear transformations $T:V\mapsto W$. It's worth noting that $L(V,W)$ with addition and scalar multiplication defined as usual is a vector space. The dimension of such a vector space is
+\begin{equation*}
+    \dim L(V,W) = \dim V \cdot \dim W
+\end{equation*}
+if $\{\alpha_1,\dots,\alpha_n\}$ is a basis for V, $\{\beta_1,\dots,\beta_m\}$ is a basis for W and we define $nm$ linear transformations $E^{p,q}$ such that $E^{p,q}\alpha_i = \delta_{i,p}\beta_q$ it can be demonstrated that this form a basis for $L(V,W)$.
+
+The following statements are easily demonstrated.
+\begin{itemize}
+    \item Composition of linear transformations is also a linear transformation.
+    \item The inverse of a linear transformation (if exists) is a linear transformation.
+    \item A linear operator is a linear transformation where the domain and codomain is the same. 
+\end{itemize}
+and all together tell us that $L(V,W)$ with addition, scalar multiplication and composition as product form a \textbf{linear algebra} which is a special kind of algebraic structure.
+
+A non-singular transformation is such that $N_T=\{0\}$. A result tell us that a linear transformation is non-singular iff it maps linearly independent sets onto linearly independent sets. If $T:V\mapsto W$ and $\dim V = \dim W$ then
+\begin{enumerate}
+    \item $T$ is invertible
+    \item $T$ is non-singular
+    \item $T$ is onto 
+    \item $\{\alpha_1,\dots,\alpha_n\}$ basis of $V$ then $\{T\alpha_1,\dots,T\alpha_n\}$ basis of $W$
+\end{enumerate}
+are equivalent.
+\end{document}

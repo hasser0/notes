@@ -1,0 +1,12 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+\subsection{Double dual}
+The double dual vector space $V^{**}$ is the dual of the dual vector space. We can define a linear functional on $V^*$ as $L_\alpha(f)=f(\alpha)$. The transformation $\gamma:V\mapsto V^{**}$ define as $\gamma(\alpha)=L_\alpha$ is a one to one linear transformation, also is onto because $\dim V = \dim V^* = \dim V^{**}$; therefore $V$ and $V^{**}$ are isomorphic each other. This means that every $\alpha\in V$ is related to one and only one $f\in L_\alpha$. Also this means that every dual basis $\mathfrak{B}^*$ has it's corresponding $\mathfrak{B}^{**}$ such that $L_i(f)=f_j(\alpha_i)=\delta_{ij}$ and this means that $\mathfrak{B}^*$ is dual to $\mathfrak{B}$. For this reason it's said that $V$ is the dual space of $V^*$.
+
+In summary we can treat double dual space as the original space without lose of generality.
+
+An hyperspace $H$, for any finite or infinite dimensional space, can be define as a proper maximal vector space. This means that $H\subseteq H'$ then $H'=H$ or $H=V$ . It can be proofed that every hyperspace is the null space for a linear functional and that the null space of a linear transformation is a null space. The first statement is equivalent to proof that every vector $\beta\in V$ can be written as $\gamma + c\alpha$, where $\gamma\in N_f$ and $\alpha\not\in N_f$. The second statement equivalent to demonstrating that $f(\beta)=c$ is a function and linear functional such that $\beta = \gamma + c\alpha$ with the same conditions as above.
+
+Finally a result showing that $g=\sum_{i=1}^k c_i f_i$ if and only if $\cap_{i=1}^k N_{f_i} \subseteq N_g$. This result can be showed by induction. For the base case this means that $h=g-\frac{g(\alpha)}{f(\alpha)}f=0$  for every vector, where $\alpha\notin N_f$ so that $f(\alpha)\neq 0$. For the general result $n=k$ we can restrict the $f_1,\dots,f_{k-1}$ to the null space $N_{f_k}$ and then showing that $f(\alpha)=0$ or $\alpha\in N_{f_k}$ implies $h=g-\sum_{i=1}^{k-1} c_i f_i = 0$ so $h = c_k f_k$
+\end{document}

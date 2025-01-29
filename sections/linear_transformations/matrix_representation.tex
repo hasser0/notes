@@ -1,0 +1,70 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+\subsection{Matrix representation of linear transformations}
+Linear transformations can be represented as a matrix. For example, let $\mathfrak{B}=\{\alpha_1,\dots,\alpha_n\}$ a basis for $V$, $\mathfrak{B}'=\{\beta_1,\dots,\beta_m\}$ a basis for $W$ and $T:V\mapsto W$ such that $T\alpha_j=\sum_{i=1}^m A_{ij}\beta_i$. If $\alpha=\sum_{j=1}^n x_j\alpha_j$, then we got
+\begin{align*}
+    T\alpha = T\Big(\sum_{j=1}^n x_j \alpha_j\Big)
+    &=\sum_{j=1}^n x_j T\alpha_j\\
+    &=\sum_{j=1}^n x_j \sum_{i=1}^m A_{ij}\beta_i\\
+    &=\sum_{j=1}^n \sum_{i=1}^m A_{ij}x_j\beta_i\\
+    &=\sum_{i=1}^m \Big(\sum_{j=1}^n A_{ij}x_j\Big)\beta_i\\
+    &\Longleftrightarrow\\
+    \big[T\alpha\big]_\mathfrak{B'}&=
+    A\big[\alpha\big]_\mathfrak{B}
+\end{align*}
+where A is called the matrix of $T$ relative to basis $\mathfrak{B}$ and $\mathfrak{B'}$. 
+
+Since $A_{ij}$ are unique for each pair of basis and each transformations, it may be reasonable to think about a function $\gamma:L(V,W)\mapsto F^{n\times m}$. In fact this function is linear, so is a linear transformation; suppose $\gamma(T) = A$ and $\gamma(U) = B$, now in a similar way
+\begin{align*}
+    (cT+U)\alpha &= (cT+U)\Big(\sum_{j=1}^n x_j \alpha_j\Big)\\
+    &=cT\Big(\sum_{j=1}^n x_j \alpha_j\Big) + U\Big(\sum_{j=1}^n x_j \alpha_j\Big)\\
+    &=c\sum_{i=1}^m\sum_{j=1}^n A_{ij}x_j\beta_i + \sum_{i=1}^m \sum_{j=1}^n B_{ij}x_j\beta_i\\
+    &=\sum_{i=1}^m\Big(\sum_{j=1}^n (cA_{ij} + B_{ij})x_j\Big)\beta_i\\
+    &\Longleftrightarrow\\
+    \gamma(cT+U)&=c\gamma(T)+\gamma(U)
+\end{align*}
+Because $\gamma$ is a linear function one-one and $\dim L(V,W) = \dim F^{n\times m}$ this means $\gamma$ is an isomorphism of V and W, equivalent to saying that $L(V,W)$ and $F^{n\times m}$ are isomorphic.
+
+Composition of linear transformations $(UT)$ can be represented as a product of matrices. If $A$ is the matrix of T relative to basis $\mathfrak{B}$ and $\mathfrak{B'}$ and $B$ is the matrix of U relative to basis $\mathfrak{B'}$ and $\mathfrak{B''}$ then
+\begin{equation*}
+    \big[(UT)\alpha\big]_\mathfrak{B''}=
+    BA\big[\alpha\big]_\mathfrak{B}
+\end{equation*}
+this can be proofed using a similar argument to the previous ones.
+
+Note that the matrix $M_{\mathfrak{B}\mapsto\mathfrak{B'}}$ corresponding to the basis $\mathfrak{B}$ and $\mathfrak{B'}$ for the transformation M which carries vectors from $\mathfrak{B}$ to $\mathfrak{B'}$ is called the change of basis matrix from $\mathfrak{B}$ to $\mathfrak{B'}$. This matrix has the property that 
+\begin{align*}
+    [\alpha]_{\mathfrak{B'}}&=
+    M_{\mathfrak{B}\mapsto\mathfrak{B'}}[\alpha]_{\mathfrak{B}}
+\end{align*}
+
+Now, we treat cases when $T$ is a linear operator and $[T]_{\mathfrak{B}}$ is the matrix of $T$ corresponding to $\mathfrak{B}$.
+\begin{alignat*}{3}
+    &
+    &\big[T\alpha\big]_{\mathfrak{B}} 
+    &=\big[T\big]_{\mathfrak{B}}\big[\alpha\big]_{\mathfrak{B}}
+    \\
+    \Longleftrightarrow&
+    &\big[T\alpha\big]_{\mathfrak{B}} 
+    &=\big[T\big]_{\mathfrak{B}}M_{\mathfrak{B'}\mapsto\mathfrak{B}}[\alpha]_{\mathfrak{B'}}
+    \\
+    \Longleftrightarrow&
+    &M_{\mathfrak{B}\mapsto\mathfrak{B'}}\big[T\alpha\big]_{\mathfrak{B}} 
+    &=M_{\mathfrak{B}\mapsto\mathfrak{B'}}\big[T\big]_{\mathfrak{B}}M_{\mathfrak{B'}\mapsto\mathfrak{B}}[\alpha]_{\mathfrak{B'}}
+    \\
+    \Longleftrightarrow&
+    &\big[T\alpha\big]_{\mathfrak{B'}} 
+    &=M_{\mathfrak{B}\mapsto\mathfrak{B'}}\big[T\big]_{\mathfrak{B}}M_{\mathfrak{B'}\mapsto\mathfrak{B}}[\alpha]_{\mathfrak{B'}}
+    \\
+    \Longleftrightarrow&
+    &\big[T\big]_{\mathfrak{B'}} 
+    &=M_{\mathfrak{B}\mapsto\mathfrak{B'}}\big[T\big]_{\mathfrak{B}}M_{\mathfrak{B'}\mapsto\mathfrak{B}}
+    \\
+\end{alignat*}
+Any pair of square matrices $A,B\in F^{n\times n}$ are said to be similar if exists $P\in F^{n\times n}$ invertible such that
+\begin{equation*}
+    B = PAP^{-1}
+\end{equation*}
+\end{document}
+

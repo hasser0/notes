@@ -1,0 +1,27 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+\subsection{Linear functionals}
+Let $V$ be a vector space over the field $F$ then a linear functional is a linear transformation $f:V\mapsto F$. This is the same as $f\in L(V,F)$. To name just a few, for $F^n$ is the scalar product, for polynomials is evaluating on an scalar $t\in F$, for functions can be the integral, and so on. 
+
+The set of linear functionals is a vector space because is a subspace of functions and every linear transformation $cf+g$ is also a linear transformation. This vector vector space is usually denoted by $V^*$ and it's called the dual space of $V$; the dimension of such vector space is 
+\begin{equation*}
+    \dim V^* = \dim L(V,F)=\dim V \dim F =\dim V
+\end{equation*}
+each linear functions have the property that $\dim N_f\ge n-1$, so the null space of linear functional is an hyperspace.
+
+Given a basis of $V$, $\mathfrak{B}=\{\alpha_1,\dots,\alpha_n\}$ we can define $\mathcal{B}^*=\{f_1,\dots,f_n\}$ as the dual basis of $\mathfrak{B}$ such that $f_i(\alpha_j)=\delta_{ij}$. We say it's a basis since is a set of n linear independent vectors.
+
+It can be easily proofed that given $\mathfrak{B}=\{\alpha_1,\dots,\alpha_n\}$ and $\mathcal{B}^*=\{f_1,\dots,f_n\}$ it holds for every vector $\alpha$ and every linear functional $f$ that.
+\begin{align*}
+    f &= \sum_{i=1}^n f(\alpha_i)f_i\\
+    \alpha &= \sum_{i=1}^n f_i(\alpha)\alpha_i
+\end{align*}
+the interpretation for this is that the vectors of the dual basis $\mathfrak{B}^*$ maps any vector to the corresponding coordinate in the basis $\mathfrak{B}$ and viceversa.
+
+Let $S\subseteq V$ a set of vectors, we define the annihilator $S^0$ as the vector space of linear function such that $f(\alpha)=0\ \forall \alpha\in S$. If $S$ is a vector space then it holds that (for $V$ finite dimensional space)
+\begin{equation*}
+    \dim S + \dim S^0 = \dim V
+\end{equation*}
+This can be proofed using $\mathfrak{B}=\{\alpha_1,\dots,\alpha_k,\alpha_{k+1},\dots,\alpha_n\}$ and $\mathfrak{B}^*=\{f_1,\dots,f_k,f_{k+1},\dots,f_n\}$ where $\{\alpha_1,\dots,\alpha_k$ generates $S$. Then we can show that  $\{f_{k+1},\dots,f_n\}$ generates $S^0$ defining $f\in V^*$ as a linear combination of $\mathfrak{B}^*$ and then follow what happens when $\alpha\in S$ and is applied to $f$. It's also true that $S = S' = \{\alpha:f_i(\alpha)=0,\ i=k+1,\dots,n \}$ this means that every subspace is the intersection of some hyperspaces; $W_1=W_2$ if and only if $W_1^0=W_2^0$.
+\end{document}

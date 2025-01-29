@@ -1,0 +1,60 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+\subsection{Transpose}
+Given a linear transformation $T:V\mapsto W$ such that $T\in L(V,W)$ we can define the linear transformation $T^t:W^*\mapsto V^*$ as
+\begin{align*}
+    \Big[T^t(g)\Big](\alpha) &= g(T\alpha)\\
+    &\equiv\\
+    T^tg &= g\circ T
+\end{align*}
+Note that $g\circ T$ is a linear function on $V$. It's easy to demonstrate that $N_{T^t}=(R_T)^0$. Using the previous preposition, for finite dimensional space, it's direct the demonstration that $\dim R_{T^t}=\dim R_T$. Finally $R_{T^t}=(N_T)^0$, because $R_{T^t}\subseteq (N_T)^0$ and $\dim R_{T^t} = \dim (N_T)^0$. This result is summarized in the following diagram, note the relation among subspaces.
+\begin{center}
+\begin{tikzpicture}[
+    subspace/.style={circle, draw=black!180, fill=blue!20, very thick, minimum size=10mm},
+    space/.style={circle, draw=black!180, fill=green!20, very thick, minimum size=10mm},
+]
+    \node[subspace] (NT) {$N_T$};
+    \node[subspace] (RT) [right=of NT] {$R_T$};
+    \node[subspace] (RTT) [below=of NT] {$R_{T^t}$};
+    \node[subspace] (NTT) [right=of RTT] {$N_{T^t}$};
+    \node[space] (V) [above left=0.5cm and 0.5cm of NT ] {$V$};
+    \node[space] (Vd) [below left=0.5cm and 0.5cm of RTT ] {$V^*$};
+    \node[space] (W) [above right=0.5cm and 0.5cm of RT ] {$W$};
+    \node[space] (Wd) [below right=0.5cm and 0.5cm of NTT ] {$W^*$};
+
+    \draw[->] (NT) node[above,xshift=1cm] {$T$} -- (RT);
+    \draw[->] (NTT) node[below,xshift=-1cm] {$T^t$}-- (RTT);
+    \draw[<->] (NT) node[left,xshift=-0.25cm,yshift=-1cm,rotate=90,anchor=south] {\tiny annihilator}-- (RTT);
+    \draw[<->] (NTT) node[right,xshift=0.2cm,yshift=1.1cm,rotate=270,anchor=south] {\tiny annihilator}-- (RT);
+    \draw[-] (V) node[above,xshift=2.3cm,yshift=0cm] {\tiny $\dim N_T + \dim R_T = \dim V$} -- (W);
+    \draw[-] (V) node[left,xshift=0cm,yshift=-2.4cm,rotate=90,anchor=south] {\tiny $\dim N_T + \dim R_{T^t} = \dim V$} -- (Vd);
+    \draw[-] (W) node[right,xshift=0cm,yshift=-2.4cm,rotate=270,anchor=south] {\tiny $\dim R_T + \dim N_{T^t} = \dim W$} -- (Wd);
+    \draw[-] (Vd) node[below,xshift=2.4cm,yshift=0cm] {\tiny $\dim N_{T^t} + \dim R_{T^t} = \dim W$} -- (Wd);
+\end{tikzpicture}
+\end{center}
+Let 
+\begin{align*}
+    \mathfrak{B}&=\{\alpha_1,\dots,\alpha_n\}\subset V\\
+    \mathfrak{B}'&=\{\beta_1,\dots,\beta_m\}\subset W\\
+    \mathfrak{B}^*&=\{f_1,\dots,f_n\}\subset V^*\\
+    \mathfrak{B}'^*&=\{g_1,\dots,g_m\}\subset W^*\\
+\end{align*}
+$A$ the matrix of $T$ relative to basis $\mathfrak{B}$ and $\mathfrak{B'}$, $B$ the matrix of $T^t$ relative to $\mathfrak{B'^*}$ and $\mathfrak{B^*}$, then $B_{ji}=A_{ij}$
+\begin{align*}
+    T\alpha_j &= \sum_{i=1}^m A_{ij}\beta_i\\
+    T^t g_j &= \sum_{i=1}^n B_{ij}f_i\\
+    \Longrightarrow (T^t g_j)(\alpha_i) &= A_{ji}\\
+    \Longrightarrow T^t g_j &= \sum_{i=1}^m(T^t g_j)(\alpha_i) f_i\\
+    &= \sum_{i=1}^m A_{ji} f_i\\
+    &= \sum_{i=1}^m B_{ij} f_i\\
+\end{align*}
+so $A_{ji}=B{ij}$.
+
+The last result tell us that $\text{row rank}(A) = \text{column rank}(A)$ because
+\begin{alignat*}{3}
+    &&\text{rank } T^t &= \text{rank } T\\
+    \Longrightarrow \qquad&&\text{column rank } A^t &= \text{column rank } A\\
+    \Longrightarrow \qquad&&\text{row rank } A &= \text{column rank } A\\
+\end{alignat*}
+\end{document}

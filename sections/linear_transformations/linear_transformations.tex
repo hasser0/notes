@@ -1,0 +1,36 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+\subsection{Linear transformations}
+Let $V$ and $W$ be vector spaces, a linear transformation $T:V\mapsto W$ is a function which
+\begin{equation*}
+    T(c\alpha + \beta) = cT\alpha + T\beta
+\end{equation*}
+If $V$ is finite dimensional vector space, $\{\alpha_1,\dots,\alpha_n\}$ is a basis for $V$ and $\{\beta_1,\dots,\beta_n\}$ is an arbitrary set of vectors in $W$, then exists a unique linear transformation $T$ such that 
+\begin{equation*}
+    T\alpha_i = \beta_i
+\end{equation*}
+this can be proofed using the fact that given a basis there is a unique representation for each vector; given $(x_1,\dots,x_n)$ a representation of a vector $\alpha$ in the defined basis, the transformation
+\begin{equation*}
+    T\alpha = \sum_{i=1}^n x_i \beta_i
+\end{equation*}
+is linear.
+An important result for linear transformations is that
+\begin{equation*}
+    \dim N_T + \dim R_T = n
+\end{equation*}
+Since $B_N = \{\alpha_1,\dots,\alpha_k\}$ a basis of the null space can be used to create a basis for $V$ $\{\alpha_1,\dots,\alpha_k,\alpha_{k+1},\dots,\alpha_n\}$ we can proof that $\{T\alpha_{k+1},\dots,T\alpha_n\}$ is a basis for the range of $T$.
+Using the previous result can be proofed that for any matrix $A\in F^{m\times n}$
+\begin{equation*}
+    \text{row rank} (A) = \text{column rank} (A)
+\end{equation*}
+note that
+\begin{equation*}
+    R_T = \{x: x=\sum_{i=1}^n c_i A_{:,i}\}
+\end{equation*}
+which is the column's space rank. Therefore 
+\begin{equation*}
+    \text{column rank} (A) = n - \dim N_T
+\end{equation*}
+in the Echelon row reduced form $R$ of $A$ there are $n - \dim N_T$ pivot variables which arise $n - \dim N_T$ vectors $v_i$ obtained when $x_{k_i}=1$ and $x_{k_j}=0$ for $j\neq i$, where $\{k_1,\dots,k_{n-r}\}$ are the indices of the pivot variables.
+\end{document}

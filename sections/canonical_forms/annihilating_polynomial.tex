@@ -1,0 +1,65 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+\subsection{Annihilating polynomials}
+A polynomial algebraic structure is define under an algebra. An algebra $<V,+,\cdot,\times>$ is an algebraic structure such that $<V,+,\cdot>$ is a vector space and 
+\begin{align*}
+    x\times(y+z)&=x\times y + x\times z\\
+    (y+z)\times x &= y\times x + z\times x\\
+    (\alpha\cdot x)\times(\beta\cdot y) &=\alpha\beta\cdot(x\times y)
+\end{align*}
+Some examples of algebras are square matrices with corresponding addition, scalar product and multiplication; functions with addition, scalar product and composition as multiplication.
+
+An ideal $I$ over a ring $R$ is an algebraic structure with the property that whenever $x\in I$ and $y\in R$ then $xy\in I$. Polynomials over a field $F[X]$ are a ring so we can define a polynomial ideal, specifically it concerns us the ideal 
+\begin{equation*}
+    I_T = \{p\in F[X]: p(T)=0\}
+\end{equation*}
+this is a set of polynomials such that annihilates the transformation $T$. The monic polynomial $p_0$ with lowest degree that is in the ideal $I$ is called the \textbf{minimal polynomial}.
+
+For a matrix or linear transformation, the minimal polynomial $p_0$ and the characteristic polynomial $p$ has the same roots except for their multiplicities. This is proved by showing that $\lambda$ is a characteristic value if and only if $p_0(\lambda)=0$. We must mention that this theorem doesn't imply equality between characteristic and minimal polynomials, neither that $p_0=\prod (x-\lambda_i)$. Even it's not already demonstrated that $p = p_0\prod (x-\lambda_i)^n_i$ or in other words that $p\in I_T$. For example it could be the case that $p_0 = (x-2)^2 (x-1)$ and $p = (x-2)(x-1)$ and the previous result holds. This doesn't happen and it's demonstrated on the \textbf{Cayley Hamilton theorem} which says that any matrix or linear transformation satisfies its characteristic polynomial. In other words that $p(T)=0$ or that $p\in I_T$.
+Before we start the proof of this theorem is worth noting that a matrix is an algebraic structure over a ring (a field that has not inverse and is not commutative under multiplication) and that functions (linear transformations) are rings, so we can construct matrices over linear transformations.
+Let $T:V\mapsto V$, $\mathcal{B}=\{\alpha_1,\dots,\alpha_n\}$ then $A = [T]_{\mathcal{B}}$ so that
+\begin{align*}
+    T\alpha_j 
+    &= \sum_{i=1}^n A_{ij}\alpha_i\\
+    \Longrightarrow \sum_{i=1}^n (\delta_{ij}T - A_{ij})\alpha_i &= 0\\
+\end{align*}
+
+Let $B_{ij}= \delta_{ij}T-A_{ji}I$ so that
+\begin{align*}
+    B_{i,:}\begin{bmatrix}
+        \alpha_1\\ \vdots \\ \alpha_n
+    \end{bmatrix}
+    &= \sum_{j=1}^n B_{ij}\alpha_j\\
+    &= \sum_{j=1}^n (\delta_{ij}T-A_{ji}I)\alpha_j=0
+\end{align*}
+This shows that
+\begin{align*}
+    B\begin{bmatrix}
+        \alpha_1\\ \vdots \\ \alpha_n
+    \end{bmatrix}
+    &=0
+\end{align*}
+Now let the matrix $\hat{B}=\text{adj }B$, then it's true that $\hat{B}B = (\det B)I$
+where I is the identity matrix over linear transformations. Finally.
+\begin{align*}
+    \hat{B}B\begin{bmatrix}
+        \alpha_1\\ \vdots \\ \alpha_n
+    \end{bmatrix}
+    &= \hat{B}\Big( B\begin{bmatrix}
+        \alpha_1\\ \vdots \\ \alpha_n
+    \end{bmatrix}\Big)\\
+    &= \hat{B}\Big(\begin{bmatrix}
+        0\\ \vdots \\ 0
+    \end{bmatrix}\Big)\\
+    &= \det B( I \begin{bmatrix}
+        \alpha_1\\ \vdots \\ \alpha_n
+    \end{bmatrix}\Big)\\
+    &= (\begin{bmatrix}
+        (\det B)\alpha_1\\ \vdots \\ (\det B)\alpha_n
+    \end{bmatrix}\Big)= (\begin{bmatrix}
+        0\\ \vdots \\ 0
+    \end{bmatrix}\Big)
+\end{align*}
+We shall mention that $\det B$ is the characteristic polynomial of $A$ and since $(\det B)\alpha_j=0\ \forall j$ this means that $(\det B)\alpha = 0$ for any vector $\alpha\in V$
+\end{document}

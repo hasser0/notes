@@ -1,0 +1,31 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+\subsection{Characteristic values}
+Finding a simple matrix representation for a linear transformation $T:V\mapsto V$ is worth because help us to calculate more easily any evaluation. The simplest representation of a transformation is a diagonal matrix.
+\begin{equation*}
+    D = \begin{bmatrix}
+        \lambda_1 & 0 & \dots & 0\\
+        0 & \lambda_2 & \dots & 0\\
+        \vdots & \vdots & \ddots & 0\\
+        0 & 0 & \dots & \lambda_n\\
+    \end{bmatrix}
+\end{equation*}
+then for the vectors in the basis this is simply $T\alpha_i = \lambda_i \alpha_i$. This motivates our interest in finding such values and vectors, if those exists, that satisfy the previous relation. Such scalar $\lambda_i$ is called \textbf{characteristic value}. The set of vector such that $T\alpha = \lambda_i \alpha$ is a vector space also called \textbf{characteristic space} of $\lambda_i$ and any vector with this property is called a \textbf{characteristic vector} asociated to the characteristic value $\lambda_i$.
+
+Searching for this values is done calculating the roots of the \textbf{characteristic polynomial} $\det(A-\lambda I)$, where $A$ is the matrix of $T$ related to any of its basis. We can choose any basis because any pair of similar basis has the same characteristic polynomial and all matrices of $T$ corresponding any basis are similar. Let $A = PBP^{-1}$ then
+\begin{align*}
+    \det(B-\lambda I) 
+    &= \det(PBP^{-1}-\lambda PIP^{-1})\\
+    &= \det(PBP^{-1}-\lambda I)\\
+    &= \det(A-\lambda I)\\
+\end{align*}
+
+For any matrix A the following are equivalent
+\begin{enumerate}
+    \item A is diagonalizable
+    \item the characteristic polynomial for A is $\prod(x-\lambda_i)^{d_i}$ with $\dim W_i = d_i$
+    \item $\dim V = \sum \dim W_i$
+\end{enumerate}
+so we can find out if a matrix is diagonalizable by calculating the dimension of the chararacteristic spaces.
+\end{document}
