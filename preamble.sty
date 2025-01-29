@@ -11,3 +11,59 @@
 \newtheorem*{theorem}{Theorem}
 \newtheorem*{corollary}{Corollary}
 \newtheorem*{lemma}{Lemma}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{geometry}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{positioning}
+\pgfplotsset{compat=1.18}
+\usepackage{float}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{subfiles}
+ 
+% Probability
+\newcommand{\p}{\mathcal{P}}
+\newcommand{\pr}{\mathbb{P}}
+\newcommand{\cov}[1]{\mathrm{Cov}[#1]}
+\newcommand{\covv}[2]{\mathrm{Cov}[#1,#2]}
+\newcommand{\var}[1]{\mathrm{Var}[#1]}
+\newcommand{\mode}[1]{\mathrm{Mode}[#1]}
+\newcommand{\corr}[1]{\mathrm{Corr}[#1]}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\e}[1]{\mathrm{E}[#1]}
+\newcommand{\normal}{\mathcal{N}}
+\newcommand{\risk}{\mathcal{R}}
+\newcommand{\model}{\mathcal{M}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\actions}{\mathcal{A}}
+\newcommand{\states}{\mathcal{H}}
+
+% Linear algebra
+\let\oldvec\vec
+\renewcommand{\vec}[1]{\oldvec{\mathbf{#1}}}
+\newcommand{\diag}[1]{\mathrm{diag}[#1]}
+\newcommand{\mat}[1]{\mathbf{#1}}
+
+% General
+\DeclareMathOperator*{\argmax}{argmax\text{ }}
+\DeclareMathOperator*{\argmin}{argmin\text{ }}
+\newcommand{\real}{\mathbb{R}}
+\newcommand{\indicator}[1]{[\![#1]\!]}
+
+%settings
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{10pt}
+\geometry{
+    paper=letterpaper,
+    margin=25mm,
+    centering
+}
+
+\title{Machine Learning}
+\author{Osvaldo Estrada}
+\date{September 2022}

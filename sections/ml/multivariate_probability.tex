@@ -1,0 +1,119 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+
+\subsection{Expectation}
+\begin{align*}
+    \e{\mat{X}} &= E
+    \begin{bmatrix}
+        x_{11} & x_{12} & \dots & x_{1m} \\
+        x_{21} & x_{22} & \dots & x_{2m} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        x_{n1} & x_{n2} & \dots & x_{nm} \\
+    \end{bmatrix}\\
+    &= \begin{bmatrix}
+        \e{x_{11}} & \e{x_{12}} & \dots & \e{x_{1m}} \\
+        \e{x_{21}} & \e{x_{22}} & \dots & \e{x_{2m}} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        \e{x_{n1}} & \e{x_{n2}} & \dots & \e{x_{nm}} \\
+    \end{bmatrix}
+\end{align*}
+
+\subsection{Covariance}
+\begin{align*}
+    \cov{\vec{x}} &= \e{ (\vec{x}-\e{\vec{x}}) (\vec{x}-\e{\vec{x}})^T }\\
+    &= \e{ \vec{x}\vec{x}^T - \vec{x}\e{\vec{x}}^T - \e{\vec{x}}\vec{x}^T + \e{\vec{x}}\e{\vec{x}}^T }\\
+    &= \e{ \vec{x}\vec{x}^T }
+        - \e{\vec{x}}\e{\vec{x}}^T
+        - \e{\vec{x}}\e{\vec{x}^T}
+        + \e{\vec{x}}\e{\vec{x}}^T\\
+    &= \e{ \vec{x}\vec{x}^T } - \vec{\mu}\vec{\mu}^T
+\end{align*}
+Usually covariance matrix is defined using 
+$$\cov{\vec{x}} = \mat{\Sigma}$$ 
+and therefore
+$$\e{\vec{x}\vec{x}^T}=\mat{\Sigma}+\vec{\mu}\vec{\mu}^T$$
+An important property is that
+\begin{align*}
+    \cov{\mat{A}\vec{x}+\vec{b}} 
+    &= \e{ (\mat{A}\vec{x}+\vec{b}-\e{\mat{A}\vec{x}+\vec{b}})
+        (\mat{A}\vec{x}+\vec{b}-\e{\mat{A}\vec{x}+\vec{b}})^T }\\
+    &= \e{ (\mat{A}\vec{x}-\e{\mat{A}\vec{x}})
+        (\mat{A}\vec{x}-\e{\mat{A}\vec{x}})^T }\\
+    &= \e{ \mat{A}(\vec{x}-\e{\vec{x}})
+        (\vec{x}-\e{\vec{x}})\mat{A}^T }\\
+    &= \mat{A}\e{ (\vec{x}-\e{\vec{x}})
+        (\vec{x}-\e{\vec{x}}) }\mat{A}^T\\
+    &= \mat{A}\cov{\vec{x}}\mat{A}^T\\
+\end{align*}
+Another definition for covariance is the following
+\begin{equation*}
+    \covv{\vec{x}}{\vec{y}} = \e{ (\vec{x}-\e{\vec{x}}) (\vec{y}-\e{\vec{y}})^T }\\
+\end{equation*}
+
+\subsection{Correlation}
+Let $K_{xx}=\mat{\Sigma}=\cov{\vec{x}}$ then correlation is defined as
+\begin{equation*}
+    \corr{\vec{x}} = \diag{K_{xx}}^{-\frac{1}{2}} K_{xx} \diag{K_{xx}}^{-\frac{1}{2}}
+\end{equation*}
+
+\subsection{Multivariate gaussian}
+\begin{equation*}
+    \normal(\vec{x}|\vec{\mu},\mat{\Sigma}) = \dfrac{1}{(2\pi)^{D/2} |\mat{\Sigma}|^{1/2}}
+        \exp\left( -\frac{1}{2}(\vec{x}-\vec{\mu})^T \mat{\Sigma}^{-1} (\vec{x}-\vec{\mu}) \right)
+\end{equation*}
+where $\mat{\Sigma}$ is positive definite. Note that every covariance matrix is positive definite
+\begin{align*}
+    \vec{u}^T\mat{\Sigma}\vec{u}
+    &= \vec{u}^T \e{ (\vec{x}-\e{\vec{x}}) (\vec{x}-\e{\vec{x}})^T } \vec{u}\\
+    &= \cov{\vec{u}^T\vec{x}}\\
+    &= \var{\vec{u}^T\vec{x}} \ge 0
+\end{align*}
+Note that $\vec{u}^T \vec{x}\in \real$
+
+\subsection{Mixture models}
+Mixture models combine multiple distributions in one by using a categorical variable also called \textbf{class}
+\begin{align*}
+    \p(\vec{y}|\vec{\theta}) 
+    &= \sum_{k=1}^K \p(z_k|\vec{\theta}) \p(\vec{y}|z_k, \vec{\theta} )\\
+    &= \sum_{k=1}^K \p(z_k) \p_k(\vec{y}|\vec{\theta} )\\
+    &= \sum_{k=1}^K \pi_k \p_k(\vec{y}|\vec{\theta} )
+\end{align*}
+where $\p(z)\sim \mathrm{Cat}(z|\vec{\Pi})$ and $z\in\{ 1,\dots,K \}$. Each $\p_k$ is a distribution, for example a \textbf{mixture of gaussians} or \textbf{gaussian mixture model} is a mixture model where each $\p_k$ is a multivariate/univariate gaussian distributions
+
+\subsection{Probabilistic graphical models}
+To model multivariate random variables, it's necessary to fit a distribution $\p(\vec{x})$, which is hard to do. Some variables may not be related while others may be, so to model dependence between variables we use graphical models, specifically an \textbf{DAG} or \textbf{directed acyclic graph}, where nodes are random variables and directed edges means conditional dependence (therefore no directed edge between two variables means conditional independence, this is use to simplified many terms in the distribution model) then
+\begin{equation*}
+    \p(\vec{y}_{1:v}) = \prod_{i=1}^{V} \p(y_i|y_{\mathrm{parents}(i)})
+\end{equation*}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    circ/.style={circle, draw=black!120, fill=black!10, thick}
+]
+    \node[circ] (v) {V};
+    \node[circ] (y) [right=of v]{Y};
+    \node[circ] (w) [above=of y]{W};
+    \node[circ] (x) [below=of y]{X};
+    \node[circ] (z) [right=of y]{Z};
+    \draw[->] (v.north) -- (w.west);
+    \draw[->] (v.south) -- (x.west);
+    \draw[->] (y.east) -- (z.west);
+    \draw[->] (w.east) -- (z.north);
+    \draw[->] (x.north) -- (y.south);
+\end{tikzpicture}
+\caption{Graphical model example}
+\label{fig:graphmodel}
+\end{figure}
+
+Figure \ref{fig:graphmodel} shows a graphical model with distribution
+\begin{align*}
+    \p(v,w,x,y,z)=\p(v)\cdot\p(w|v)\cdot\p(x|v)\cdot\p(y|x)\cdot\p(z|y,w)
+\end{align*}
+we can arrive to the same result by using the \textbf{conditional independence} definition
+\begin{equation*}
+    X \perp Y | Z \Longleftrightarrow \p(X,Y|Z)=\p(X|Z)\p(Y|Z)
+\end{equation*}
+
+\end{document}

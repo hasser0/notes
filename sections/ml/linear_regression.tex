@@ -1,0 +1,145 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+Linear regression is a model for regression task, which suppose the dependent variable is gaussian
+\begin{equation*}
+    \p(y|\vec{x},\vec{\theta}) = \normal(\vec{w}^T\vec{x},\sigma)
+\end{equation*}
+for the case homocedastic regression. Heterocedastic regression suppose the variance is a function of the input features. The parameters of the model are usually calculated using MLE and ordinary least squares methods, yielding the same results both. 
+\subsection{Ordinary least squares}
+For the case of ordinary least squares, we want to minimize the residual sum of squares
+\begin{align*}
+    \text{RSS}(\vec{w})
+    &=\frac{1}{2}\Big(\mat{X}\vec{w}-\vec{y}\Big)^T \Big(\mat{X}\vec{w}-\vec{y}\Big)\\
+    &=\frac{1}{2}\Big(
+        \vec{w}^T\mat{X}^T\mat{X}\vec{w}+
+        -2\vec{y}^T\mat{X}\vec{w}-\vec{y}^T\vec{y}^T
+    \Big)\\
+\end{align*}
+For this we calculate the gradient
+\begin{align*}
+    \nabla_{\vec{w}} \text{RSS}(\vec{w})
+    &=\frac{1}{2}\Big(
+        2\mat{X}^T\mat{X}\vec{w}+
+        -2\mat{X}^T\vec{y}\Big)
+\end{align*}
+and then equals to cero to obtain that
+\begin{align*}
+    \mat{X}^T\mat{X}\vec{w} &= \mat{X}^T\vec{y}\\ 
+    \Longleftrightarrow&\\
+    \vec{w} &= \Big(\mat{X}^T\mat{X}\Big)^{-1}\mat{X}^T\vec{y}
+\end{align*}
+the hessian $H(\vec{w})=\mat{X}^T\mat{X}$ is always positive definite since $\vec{v}^T\mat{X}^T\mat{X}\vec{v}=||\mat{X}\vec{v}||^2\ge0$, therefore the function is convex and this is a minimum for the $\text{RSS}$.
+
+\subsection{Maximum Likelihood Estimation}
+For the MLE estimator we got that
+\begin{align*}
+    \vec{w}^* &=
+    \argmin_{\vec{w}} \text{NLL}(\vec{w})\\
+    &= \argmin_{\vec{w}} -\sum_{n=1}^N \p(y_n|\vec{x_n})\\
+    &= \argmin_{\vec{w}} -\sum_{n=1}^N \log\p(y_n|\vec{x_n})\\
+    &= \argmin_{\vec{w}} -\sum_{n=1}^N -\frac{1}{2\sigma^2}(y_n-\vec{w}^T\vec{x}_n)^2\\
+    &= \argmin_{\vec{w}} \sum_{n=1}^N (y_n-\vec{w}^T\vec{x}_n)^2\\
+\end{align*}
+deriving w.r.t $\vec{w}$
+\begin{align*}
+    \nabla_{\vec{w}}\text{NLL}(\vec{w})
+    &=\sum_{n=1}^N -2\big(y_n-\vec{w}^T\vec{x}_n\big)\vec{x}_n\\
+\end{align*}
+And finally when gradient is equal to zero
+\begin{align*}
+    \sum_{n=1}^N -2y_n\vec{x}_n + 2(\vec{w}^T\vec{x}_n)\vec{x}_n &= 0\\
+    \Longleftrightarrow & \\
+    \mat{X}^T\mat{X}\vec{w} &= \mat{X}^T\vec{y}\\
+\end{align*}
+which yields the same solution than OLS.
+
+\subsection{Ridge regression}
+When variables in linear regression are highly correlated, there will be ill-conditioned matrix which yields problems with inverse. This can be solved by using Ridge regression which suppose a normal prior with zero mean over parameters
+\begin{equation*}
+    \p(\vec{\theta}) = \normal(\vec{0},\frac{1}{\lambda}\mat{I})
+\end{equation*}
+pulling parameters to have lower values than vanilla linear regression but also solving ill-conditioned matrix. In matrix form this is equivalent to calculating the MAP estimation
+\begin{align*}
+    \vec{w}^*
+    &= \argmax_{\vec{w}} \p(\vec{\theta}|\D)\\
+    &= \argmax_{\vec{w}} \p(\D|\vec{\theta}) \p(\vec{\theta})\\
+    &= \argmin_{\vec{w}} (\vec{y}-\mat{X}\vec{w})^T(\vec{y}-\mat{X}\vec{w}) + \lambda||\vec{w}||_2^2
+\end{align*}
+The solution to this problems is obtained in similar manner to OLS and the final result is
+\begin{equation*}
+    \vec{w}_{\text{map}} = \Big(\mat{X}^T\mat{X} + \lambda\mat{I}\Big)^{-1}\mat{X}^T\vec{y}
+\end{equation*}
+
+\subsection{Lasso regression}
+Lasso is a similar model to Ridge, except the prior is suppose Laplace over parameters
+\begin{equation*}
+    \p(\vec{\theta}) = \prod_{d=1}^D \frac{1}{2b}\exp\Big(\dfrac{-|w_d|}{b}\Big)
+\end{equation*}
+which is equivalent to solve
+\begin{align*}
+    \vec{w}^*
+    &= \argmin_{\vec{w}} (\vec{y}-\mat{X}\vec{w})^T(\vec{y}-\mat{X}\vec{w}) + \lambda||\vec{w}||_1
+\end{align*}
+Since this is not everywhere differentiable, we must use subgradients
+\begin{equation*}
+    \frac{d}{dx}|x|=
+\begin{cases}
+        { -1 } & \text{if } x<0 \\
+        [-1, 1] & \text{if } x=0 \\
+        { +1 } & \text{if } x>0
+    \end{cases}
+\end{equation*}
+Therefore
+\begin{align*}
+    \Omega(\vec{w})
+    &= \frac{1}{2}(\vec{y}-\mat{X}\vec{w})^T(\vec{y}-\mat{X}\vec{w}) + \lambda||\vec{w}||_1\\
+    &= \sum_{n=1}^N \frac{1}{2}\Big(y_n - \sum_{d=1}^D x_{nd}w_d\Big)^2 + \lambda \sum_{d=1}^D|w_d|\\
+    \Longrightarrow&\\
+    \dfrac{\partial\Omega}{\partial w_\delta}
+    &= -\sum_{n=1}^N \Big(y_n - \sum_{d=1}^D x_{nd}w_d\Big)x_{n\delta} + \lambda \frac{\partial}{\partial w_\delta}|w_\delta|\\
+    &= -\sum_{n=1}^N \Big(y_n x_{n\delta} - x_{n\delta}^2 w_\delta - \sum_{d\neq\delta} x_{nd}x_{n\delta}w_d\Big)+ \lambda \frac{\partial}{\partial w_\delta}|w_\delta|\\
+\end{align*}
+Setting the gradient equals zero
+
+\begin{align*}
+    0
+    &= -\sum_{n=1}^N \Big(y_n x_{n\delta} - x_{n\delta}^2 w_\delta - \sum_{d\neq\delta} x_{nd}x_{n\delta}w_d\Big) - \lambda \frac{\partial}{\partial w_\delta}|w_\delta|\\
+    \Longleftrightarrow&\\
+    w_\delta\sum_{n=1}^N x_{n\delta}^2
+    &= \sum_{n=1}^N x_{n\delta}\Big( y_n - \sum_{d\neq\delta} x_{nd}w_d\Big) - \lambda \frac{\partial}{\partial w_\delta}|w_\delta|\\
+    \Longleftrightarrow&\\
+    w_\delta
+    &= \dfrac{\sum_{n=1}^N x_{n\delta}\Big( y_n - \sum_{d\neq\delta} x_{nd}w_d\Big) - \lambda \frac{\partial}{\partial w_\delta}|w_\delta|}{\sum_{n=1}^N x_{n\delta}^2}\\
+    &= \dfrac{\vec{x}_{:,\delta}^T  \vec{r}_{-\delta} - \lambda \frac{\partial}{\partial w_\delta}|w_\delta|}{||\vec{x}_{:,\delta}||_2^2}\\
+    &= \dfrac{c_\delta - \lambda \frac{\partial}{\partial w_\delta}|w_\delta|}{a_\delta}\\  
+\end{align*}
+We can see that $c_\delta$ is proportional to the sample correlation coefficient between $\delta$ feature and the residual error of the target variable w.r.t the prediction using all variables except $\delta$; for that reason this is used to determine if its a relevant feature. Depending on $c_\delta$ sign we can establish a positive, negative or null correlation between target and feature.
+For this reason
+\begin{equation*}
+    \lambda \frac{\partial}{\partial w_\delta}|w_\delta| = 
+    \begin{cases}
+        -\lambda & \text{if } w_\delta \propto c_\delta < 0 \\
+        [-\lambda, \lambda] & \text{if } w_\delta \propto c_\delta = 0 \\
+        +\lambda & \text{if } w_\delta \propto c_\delta >0
+    \end{cases}
+\end{equation*}
+Finally assuming feature irrelevant when $w_\delta\in[-\lambda,\lambda]$ we get
+\begin{equation*}
+    w_\delta=
+    \begin{cases}
+        \frac{c_\delta + \lambda}{a_\delta} & \text{if } w_\delta \propto c_\delta < -\delta \\
+        0 & \text{if } w_\delta \propto c_\delta \in [-\delta,\delta] \\
+        \frac{c_\delta - \lambda}{a_\delta} & \text{if } w_\delta \propto c_\delta > \delta
+    \end{cases}
+\end{equation*}
+
+\subsection{Elastic Net}
+
+Finally elastic net is a model that combines Ridge regression and Lasso regression optimizing the following objective
+\begin{equation*}
+    \Omega(\vec{w}) &= (\vec{y}-\mat{X}\vec{w})^T(\vec{y}-\mat{X}\vec{w}) + \lambda_1||\vec{w}||_1 + \lambda_2||\vec{w}||_2^2\\
+\end{equation*}
+this works as a feature selection and feature clustering, grouping similar variables. The model is usually trained using coordinated descending which optimize one feature at a time while keeping fixed the rest.
+\end{document}
+

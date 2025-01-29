@@ -1,0 +1,70 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+\subsection{LDA and QDA}
+Discriminant analysis is a family of models of the type.
+\begin{equation*}
+    \pr(x | y_n=c, \theta) = \N(x|\mu_c, \Sigma_c)
+\end{equation*}
+where
+\begin{equation*}
+    \N(x|\mu_c, \Sigma_c) = \dfrac{1}{(2\pi)^{D/2} |\Sigma|^{1/2}} \exp\Big(-\frac{1}{2} (x-\mu_c)^T \Sigma_c^{-1} (x-\mu_c)\Big)
+\end{equation*}
+Our goal is to predict $c^*$ such that
+\begin{align*}
+    c^*
+    &= \argmax_c \pr(y=c|x,\theta)\\
+    &= \argmax_c \dfrac{\pr(x|y=c,\theta)\pr(y=c|\theta)}{\sum_{c'}\pr(x|y=c',\theta)\pr(y=c'|\theta)}\\
+    &= \argmax_c \pr(x|y=c,\theta)\pr(y=c|\theta)\\
+    &= \argmax_c \log\Big(\pr(x|y=c,\theta)\pr(y=c|\theta)\Big)\\
+    &= \argmax_c \log\pr(x|y=c,\theta) + \log\pr(y=c|\theta)\\
+    &= \argmax_c -\frac{1}{2}\log2\pi -\frac{1}{2}\log|\Sigma_c| -\frac{1}{2} (x-\mu_c)^T \Sigma_c^{-1} (x-\mu_c) + \log\pi_c\\
+    &= \argmax_c -\frac{1}{2}\log|\Sigma_c| -\frac{1}{2} (x-\mu_c)^T \Sigma_c^{-1} (x-\mu_c) + \log\pi_c\\
+\end{align*}
+For the case of QDA (quadratic discriminant analysis) this is the result, for the case of LDA(linear discriminant analysis) where $\Sigma_c = \Sigma\ \forall c=1,\dots,C$ this reduce to
+\begin{align*}
+    c^*
+    &= \argmax_c -\frac{1}{2} (x-\mu_c)^T \Sigma^{-1} (x-\mu_c) + \log\pi_c\\
+\end{align*}
+in the case all prior probabilities $\pi_c$ are the same, this means that the predicted class will be the closest centroid using Mahalanobis distances for $\Sigma^{-1}$
+
+\subsection{Fisher's LDA}
+
+Discriminant analysis can be overwhelming for high dimensions, for that reason, we usually use Fisher's LDA to reduce dimensionality, since PCA or other unsupervised methods doesn't take into account class separability. Let
+\begin{equation*}
+    \mat{S_B} = \sum_{c=1}^C (\mu_c - \mu)(\mu_c - \mu)^T
+\end{equation*}
+and
+\begin{equation*}
+    \mat{S_W} = \sum_{c=1}^C \sum_{n:y_n=c} (x_n - \mu_c)(x_n - \mu_c)^T
+\end{equation*}
+Note that for arbitrary $w$, $w^T S_B w$ is the distances among projected centroids and $w^T S_W w$ is the overall within clusters variance. We want to find 
+\begin{equation*}
+    w^* = \argmax_w\dfrac{w^T \mat{S_B} w}{w^T \mat{S_W} w}
+\end{equation*}
+To find $w^*$ we derive and evaluate to zero
+\begin{align*}
+    \nabla_w \dfrac{w^T \mat{S_B} w}{w^T \mat{S_W} w}
+    &= \dfrac{2(w^T \mat{S_W} w)\mat{S_B} w -2(w^T \mat{S_B} w) \mat{S_W} w}{(w^T \mat{S_W} w)^2}\\
+    \Rightarrow \mat{S_B} w 
+    &= \dfrac{(w^T \mat{S_B} w)}{(w^T \mat{S_W} w)} \mat{S_W} w
+\end{align*}
+the vector that maximize this ratio is the eigenvector with the greatest eigenvalue in the previous generalized eigen decomposition problem.
+
+The generalization to this problem for many classes is to optimize
+\begin{equation*}
+    J(\mat{W}) = \dfrac{\det\Big( \mat{W}^T \mat{S_B} \mat{W} \Big)}{\det\Big( \mat{W}^T \mat{S_W} \mat{W} \Big)}
+\end{equation*}
+which solution are the matriz with columns the eigenvectors of the greatest eigenvalues.
+
+\subsection{Naive Bayes}
+When modeling $\pr(x|y=c,\theta)$, if we suppose all features are independent this lead us to 
+\begin{equation*}
+    \pr(x|y=c,\theta) = \prod_{d=1}^D \pr(x_d|y=c,\theta)
+\end{equation*}
+the idea is to predict the most probable class. Due feature independence and using several models such as Bernoulli, Categorical, Gaussian or any mixture, we can compute 
+\begin{equation*}
+    \pr(y=c|x,\theta) = \dfrac{\pr(x|y=c,\theta)\pr(y=c|\theta)}{\sum_{c'}\pr(x|y=c',\theta)\pr(y=c'|\theta)}
+\end{equation*}
+and the parameters can be calculated independently, one from each other, using MLE or MAP for each distribution.    
+\end{document}

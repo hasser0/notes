@@ -1,0 +1,80 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+\subsection{Binary Logistic regression}
+Binary logistic regression is a discriminative model for classification that suppose a conditional distribution
+\begin{equation*}
+    \p(y=c|\vec{x},\vec{\theta}) \sim \text{Bern}(\sigma(\vec{w}^T \vec{x}))
+\end{equation*}
+Let $p=\p(y=1|\vec{x},\vec{\theta})$, then
+\begin{align*}
+    p &= \sigma(\vec{w}^T \vec{x})\\
+    &= \dfrac{1}{1 + e^{-\vec{w}^T \vec{x}}}\\
+    \Longleftrightarrow 
+    p + pe^{-\vec{w}^T \vec{x}} &= 1\\
+    \Longleftrightarrow 
+    e^{-\vec{w}^T \vec{x}} &= \dfrac{1 - p}{p}\\
+    \Longleftrightarrow 
+    \vec{w}^T \vec{x} &= \log\dfrac{p}{1 - p}    
+\end{align*}
+This means that logistic regression is equivalent to linear regression of log odds ratio. Usually, vanilla logistic regression is trained using iterative methods maximizing the likelihood, this is
+\begin{align*}
+    \vec{w} &= \argmax_{\vec{w}} \mathcal{L}(\vec{w})\\
+    &= \argmin_{\vec{w}} \text{NLL}(\vec{w})\\
+    &= \argmin_{\vec{w}} -\sum_{n=1}^N y_n\log\sigma(\vec{w}^T\vec{x}_n) +  (1-y_n)\log\Big[1-\sigma(\vec{w}^T\vec{x}_n)\Big]
+\end{align*}
+Deriving the $\text{NLL}(\vec{w})$ w.r.t. $\vec{w}$ we get the gradient
+\begin{align*}
+    \nabla_{\vec{w}} \text{NLL} 
+    &= -\sum_{n=1}^N 
+    \dfrac{y_n}{\sigma(\vec{w}^T\vec{x}_n)}
+    \dfrac{\partial\sigma(\vec{w}^T\vec{x}_n)}{\partial\vec{w}^T\vec{x}_n}
+    \dfrac{\partial\vec{w}^T\vec{x}_n}{\partial\vec{w}} 
+    +
+    \dfrac{1-y_n}{1-\sigma(\vec{w}^T\vec{x}_n)}
+    \dfrac{\partial\Big[1-\sigma(\vec{w}^T\vec{x}_n)\Big]}{\partial\vec{w}^T\vec{x}_n} \dfrac{\partial\vec{w}^T\vec{x}_n}{\partial\vec{w}}\\
+    &= -\sum_{n=1}^N 
+    \dfrac{y_n}{\sigma(\vec{w}^T\vec{x}_n)}
+    \sigma(\vec{w}^T\vec{x}_n)\Big[1-\sigma(\vec{w}^T\vec{x}_n)\Big]\vec{x}_n
+    -
+    \dfrac{1-y_n}{1-\sigma(\vec{w}^T\vec{x}_n)}
+    \sigma(\vec{w}^T\vec{x}_n)\Big[1-\sigma(\vec{w}^T\vec{x}_n)\Big]\vec{x}_n\\
+    &= -\sum_{n=1}^N 
+    y_n\Big[1-\sigma(\vec{w}^T\vec{x}_n)\Big]\vec{x}_n
+    -
+    (1-y_n)
+    \sigma(\vec{w}^T\vec{x}_n)\vec{x}_n\\
+    &= \sum_{n=1}^N 
+    \sigma(\vec{w}^T\vec{x}_n)\vec{x}_n
+    -y_n\vec{x}_n\\
+    &= \sum_{n=1}^N 
+    \Big[\sigma(\vec{w}^T\vec{x}_n)-y_n\Big]\vec{x}_n\\
+\end{align*}
+and also we can get the Hessian 
+\begin{align*}
+    \nabla_{\vec{w}} \nabla_{\vec{w}} \text{NLL}
+    &= \sum_{n=1}^N 
+    \nabla_{\vec{w}} \Big[\sigma(\vec{w}^T\vec{x}_n)-y_n\Big]\vec{x}_n\\
+    &= \sum_{n=1}^N
+    \sigma(\vec{w}^T\vec{x}_n)\Big[1-\sigma(\vec{w}^T\vec{x}_n)\Big]\vec{x}_n\vec{x}_n^T\\
+    &= \mat{X}^T \text{diag}\Big(\mu_1-\mu_1^2,\dots,\mu_n-\mu_n^2)\Big) \mat{X}
+\end{align*}
+where $\mat{X}$ is the entire dataset and $\mu_i=\sigma(\vec{w}^T\vec{x}_i)$. With these components we can find the MLE parameters using stochastic gradient descent
+\begin{align*}
+    \vec{w}_{t+1} &\leftarrow \vec{w}_{t} - \eta_t\vec{g}_t \\
+    &\Longleftrightarrow\\
+    \vec{w}_{t+1} &\leftarrow \vec{w}_{t} - \eta_t\Big[\sigma(\vec{w}^T\vec{x}_n)-y_n\Big]\vec{x}_n
+\end{align*}
+The perceptron algorithm is a limit case of logistic regression where sigmoid function $\sigma(\cdot)$ is replace by a heavistep function $\mathbb{I}(\cdot)$, the algorithm stay the same, but updating is not applied for correct predictions.
+Alternatively we can use second order Newton's method, also called iteratively reweighted least squares for logistic regression.
+\begin{align*}
+    \vec{w}_{t+1} &\leftarrow \vec{w}_{t} - \eta_t\mat{H}^{-1}\vec{g} \\
+\end{align*}
+In this case $\mat{H}$ is the already calculated Hessian and $\vec{g}$ is the gradient.
+\subsection{Multinomial logistic regression}
+Multinomial logistic regression is the case for multiple classes, the difference is the conditional distribution assumption
+\begin{equation*}
+    \p(y=c|\vec{x},\vec{\theta}) \sim \text{Cat}(\mathcal{S}(\mat{W} \vec{x}))
+\end{equation*}
+All calculations are kind of similar to binary case for gradient and for Hessian are out of the bounds of this notes.
+\end{document}

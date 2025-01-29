@@ -1,0 +1,261 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+
+\subsection{Basics}
+In machine learning context, statistics is the study and estimation of unknown parameters $\vec{\theta}$. Exists two ways of estimation, MAP(maximum at posterior) and MLE(maximum likelihood estimation). In the case of MLE
+\begin{equation*}
+    \hat{\theta}_{\mathrm{MLE}} = \argmax_{\theta} \p(\D|\theta)
+\end{equation*}
+if $\D$ are identically independently distributed(idd)
+\begin{equation*}
+    \p(\D|\theta) = \prod_{n=1}^N \p(x_n|\theta)
+\end{equation*}
+we also define log-likelihood as
+\begin{align*}
+    \mathrm{LL}(\theta) &= \log \prod_{n=1}^N \p(x_n|\theta)\\
+    &= \sum_{n=1}^N \log \p(x_n|\theta)
+\end{align*}
+and negative log-likelihood as the negative version of $\mathrm{NLL(\theta)}=-\mathrm{LL}(\theta)$ which is used for find the minimum in optimization instead of maximize the log-likelihood. MLE is a point estimation and is prone to overfit, instead can be used MAP estimation which avoids overfit.
+\begin{align*}
+    \hat{\theta}_{\mathrm{MAP}} &= \argmax_\theta \p(\theta|\D)\\
+    &= \argmax_\theta \p(\D|\theta)\p(\theta)\\
+    &= \argmax_\theta \log\p(\D|\theta) + \log\p(\theta)
+\end{align*}
+The key difference between MAP and MLE is that MAP average beliefs(prior) and data (likelihood). If $\p(\theta)\propto 1$ over the entire domain $\Theta$  then $\theta_{\mathrm{MLE}}=\theta_\mathrm{MAP}$.
+
+Discrete distributions can be parsed to continuous distribution using the empirical distribution defined as 
+\begin{equation*}
+    \p(y) = \sum_{n=1}^N \p(y_n) \delta(y-y_n)
+\end{equation*}
+in the case of data sets or uniform distributions
+\begin{equation*}
+    \p_\D(y) = \frac{1}{N}\sum_{n=1}^N \delta(y-y_n)
+\end{equation*}
+
+\subsection{Empirical risk minimization}
+Models are use to take decisions and minimize or maximize values. Empirical risk is the expected value of a loss function over the empirical distribution
+\begin{align*}
+    \mathcal{R}(\theta,\D)=\ell(\theta) &= \e{\ell(\D)}\\
+    &=\sum_{n=1}^N \p_\D(y_n)\ell(y_n|x_n,\theta)\\
+    &=\frac{1}{N} \sum_{n=1}^N \ell(y_n|x_n,\theta)\\
+\end{align*}
+this value is minimize w.r.t. the parameters. Loss functions are defined base on the problem where different losses rise different estimations.
+
+Some examples of loss functions are
+\begin{itemize}
+    \item 0-1 loss
+    \item Hinge loss
+    \item Log loss
+    \item $L_\infty$
+    \item $L_1$
+    \item $L_2$
+\end{itemize}
+
+\subsection{Regularization}
+As we discuss MLE parameters tends to overfit, which cause black swan problems on inference. Regularization is used to avoid this by adding a term to the loss function and prefer a set of parameters over others.
+\begin{equation*}
+    \ell(\theta;\lambda) = \mathrm{LL}(\theta) + \lambda C(\theta)
+\end{equation*}
+Regularization can be interpreted as MAP estimation with different priors
+\begin{align*}
+    \hat{\theta}_{\mathrm{MAP}} &= \argmax_\theta \log\p(\theta) +\sum_{n=1}^N \log\p(y_n|x_n,\theta)\\
+    &= \argmax_\theta \log\p(\theta) + \log\p(\D|\theta)\\
+    &= \argmax_\theta \log\p(\theta|\D)
+\end{align*}
+by changing different distributions we get different regularization terms, for example weight decay or $\mathrm{L}_2$ regularization is a MAP estimation with $\p(\theta)\sim \normal(\vec{0},\frac{1}{\lambda}\mat{I})$
+\begin{equation*}
+    \log\p(\theta) = -\frac{D}{2}\log 2\pi + \frac{1}{2}\log |\lambda^D|- \frac{\lambda}{2}\vec{\theta}^T\vec{\theta}
+\end{equation*}
+and then
+\begin{align*}
+    \hat{\theta}_{\mathrm{MAP}}
+    &= \argmax_\theta \log\p(\D|\theta)+\log\p(\theta)\\
+    &= \argmax_\theta \mathrm{LL}(\theta) -\frac{D}{2}\log 2\pi - \frac{1}{2}\log |\lambda^D|- \frac{\lambda}{2}\vec{\theta}^T\vec{\theta}\\
+    &= \argmax_\theta \mathrm{LL}(\theta) - \frac{\lambda}{2}\vec{\theta}^T\vec{\theta}\\
+    &= \argmax_\theta \mathrm{LL}(\theta) - \frac{\lambda}{2}||\vec{\theta}||^2\\
+\end{align*}
+Larger values of $\lambda$ means smaller variance in the $\normal$ of the prior and therefore more restriction. Smaller values of $\lambda$ means larger variance and more uniform like prior meaning less restriction.
+
+\begin{algorithm}[H]
+\begin{algorithmic}
+\State $\D_{train}, \D_{val}=$ split($\D$)
+\For{$\lambda \in \Lambda$}
+    \State $\theta_\lambda \leftarrow \argmin_\theta \risk_\lambda(\theta,\D_{train})$
+    \State $\tau_\lambda \leftarrow \risk_\lambda(\theta_\lambda,\D_{val}) $
+\EndFor
+\State $\lambda^* \leftarrow \argmin_\lambda \tau_{\lambda}$
+\State $\theta^* \leftarrow \argmin_\theta \risk_{\lambda^*}(\theta,\D)$
+\end{algorithmic}
+\caption{Choose correct $\lambda$ regularization}
+\end{algorithm}
+
+\subsection{Cross Validation}
+This is used to choose the best hyper parameters in a model splitting the data in $\D_1,\dots,\D_K$ sets
+\begin{algorithm}[H]
+\begin{algorithmic}
+\State $\D_1,\dots,\D_K \leftarrow$ split($\D$)
+\For{$\lambda \in \Lambda$}
+    \State $\tau_\lambda \leftarrow 0$
+    \For{$k=1$ to $K$}
+        \State $\theta_{\lambda,k} \leftarrow \argmin_\theta \risk_\lambda(\theta,\D_{-k})$
+        \State $\tau_\lambda \leftarrow \tau_\lambda + \risk_\lambda(\theta_{\lambda,k},\D_k)$
+    \EndFor
+\EndFor
+\State $\lambda^* \leftarrow \argmin_\lambda \tau_\lambda$
+\State $\theta^* \leftarrow \argmin_\theta \risk_{\lambda^*}(\theta,\D) $
+\end{algorithmic}
+\caption{Cross Validation}
+\end{algorithm}
+
+\subsection{Bayesian Statistics}
+Bayesian statistics framework based on Bayes rule
+\begin{equation*}
+    \p(\theta|\D) = \dfrac{\p(\D|\theta)\p(\theta)}{\int \p(\D|\theta')\p(\theta')d\theta'}
+\end{equation*}
+suppose the parameters of a model as random variables.
+
+Specifically, \textbf{prior} $\p(\theta)$ is a distribution with support over the params of the model and is set by our beliefs; for this reason Bayesian statistics is also called subjective statistics.
+
+On the other hand, \textbf{likelihood} $\p(\D|\theta)$ suppose paramaters $\theta$ are specified and want to know how probable or likely is a dataset for those model params.
+
+Finally \textbf{posterior}$\p(\theta|\D)$ is how likely are the models params for a specific dataset; notice that $\p(\D) = \int \p(\D|\theta')\p(\theta')d\theta'$ is a constant, that is why posterior maximization is usually done using 
+\begin{equation*}
+    \p(\theta|\D) \propto \p(\D|\theta)\p(\theta)
+\end{equation*}
+
+This three components are all distributions and therefore we can get statistics such as $\e{}$, $\var{}$ and $\mode{}$; for the case of the posterior distributions this are called \textbf{posterior mean}, \textbf{posterior variance} and \textbf{posterior mode or MAP estimation}, respectively, which can be seen as
+\begin{align*}
+    \e{\theta|\D} &= \int_\mathcal{S} \theta \cdot \p(\theta|\D)d\theta\\
+    \var{\theta|\D} &= \int_\mathcal{S} (\theta-\e{\theta|\D})^2 \p(\theta|\D)d\theta\\
+    \hat{\theta}_\mathrm{MAP} = \mode{\theta|\D} &= \argmax_\theta \p(\theta|\D)
+\end{align*}
+if the posterior distribution is known, we can simply calculate those values for its respective parameters.
+
+\textbf{Posterior predictive} is defined from
+\begin{align*}
+    \p(y,\theta|\D) &= \p(y|\theta,\D)\p(\theta|\D)\\
+    \Longrightarrow \p(y|\D) &= \int_\Theta \p(y|\theta,\D)\p(\theta|\D)d\theta\\
+    \Longrightarrow \p(y|\D) &= \int_\Theta \p(y|\theta)\p(\theta|\D)d\theta
+\end{align*}
+the last step due independence between $y$ and $\D$; this is similar to predict the probability of $y$ after "training"(getting the posterior of) our model with the data $\D$.
+
+\textbf{Marginal likelihood} is a generalization of priors to models; for any problem we can suggest multiple models each one with a prior $\p(\model)$ based on our beliefs, each model will be likely to the data or not base on the value $\p(\D|\model)$, if our data is highly probable given out model, it's a good idea to take that model for the problem. \textbf{Marginal likelihood} is defined as
+\begin{equation*}
+    \p(\D|\model) = \int_\Theta \p(\theta|\model)\p(\D|\theta,\model)
+\end{equation*}
+from the previous equation we can see that is similar to the denominator in the Bayes rule, this is because it's the same when only one model is supplied in the hypothesis. This value is also called \textbf{empirical bayes} and it's used to compare models.
+
+Knowing the exact posterior distribution makes easy inference process, it would be great if the posterior could be calculated with the same parameters from the prior and the data. We say $\p(\theta)\in\mathcal{F}$ is a \textbf{conjugated prior} of likelihood $\p(\D|\theta)$ if the posterior is on the same family $\p(\theta|\D)\in\mathcal{F}$. Some examples of conjugated prior are \textbf{Beta-Binomial}, \textbf{Dirichlet-Multinomial} and \textbf{Normal-Normal} models.
+
+For the Beta-Binomial
+\begin{align*}
+    \mathrm{Beta}(\theta|\alpha,\beta)&= \dfrac{1}{\mathrm{Beta}(\alpha,\beta)}\theta^{\alpha-1}(1-\theta)^{\beta-1}\\
+    \mathrm{Binom}(x|n,\theta)&= \binom{n}{x}\theta^x(1-\theta)^{n-x}\\
+    \p(\theta) &\sim \mathrm{Beta}(\theta|\alpha,\beta)\\
+    \p(\D|n,\theta) &\sim \mathrm{Binom}(x|n,\theta)\\
+    \p(\theta|\D) &\sim \mathrm{Beta}(\theta|\alpha+x,\beta+n-x)
+\end{align*}
+
+For Dirichlet-Multinomial let
+\begin{align*}
+    \mathcal{S}_K&= \{ \vec{\theta} : 0\le\theta_k\le1, \sum_{k=1}^K \theta_k = 1 \}\\
+    \mathrm{B}(\vec{\alpha})&= \dfrac{\prod_{k=1}^K\Gamma(\alpha_k)}{\Gamma(\sum_{k=1}^K \alpha_k)}
+\end{align*}
+then
+\begin{align*}
+    \mathrm{Dir}(\vec{\theta}|\vec{\alpha})&= \dfrac{1}{\mathrm{B}(\vec{\alpha})}\prod_{k=1}^K \theta_k^{\alpha_k} \indicator{\vec{\theta}\in\mathcal{S}_k}\\
+    \mathrm{Multi}(\D|\vec{\theta})&= \prod_{k=1}^K \theta_k^{\sum_{n=1}^N \indicator{x_n=k}}=\prod_{k=1}^K \theta_k^{N_k}\\
+    \p(\vec{\theta}) &\sim \mathrm{Dir}(\vec{\theta}|\vec{\alpha})\\
+    \p(\D|\vec{\theta}) &\sim \mathrm{Multi}(\D|\vec{\theta})\\
+    \p(\vec{\theta}|\D) &\sim \mathrm{Beta}(\vec{\theta}|\vec{\alpha}+\vec{N})
+\end{align*}
+
+MAP estimation or posterior mean estimation are point estimation, but it would be better to have an interval. For this case we define \textbf{credible interval} at $100(1-\alpha)\%$ to be a contiguous region which contains $1-\alpha$ of the posterior distribution.
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+        domain=-3:3,
+        axis lines = left,
+        no marks,
+        ]
+            \addplot+[smooth,blue,name path=A] {exp(-x^2/2)/(2*pi)^0.5};
+            \addplot+[draw=none,name path=B] {0}; 
+            \addplot+[gray] fill between[of=A and B,soft clip={domain=-1.96:1.96}]; % filling
+        \end{axis}
+    \end{tikzpicture}
+\end{figure}
+usually the interval select has $\alpha/2$ probability at each tail.
+
+However we want the interval to describe the set of points where $\vec{\theta}$ is more probable which can fail on credible intervals for distribution such as
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+        domain=-7:7,
+        axis lines = left,
+        no marks,
+        ]
+            \addplot+[smooth,blue,name path=A] {0.5*exp(-(x-3)^2/2)/(2*pi)^0.5+0.5*exp(-(x+3)^2/2)/(2*pi)^0.5};
+            \addplot+[draw=none,name path=B] {0}; 
+            \addplot+[gray] fill between[of=A and B,soft clip={domain=-5:5}]; % filling
+        \end{axis}
+    \end{tikzpicture}
+\end{figure}
+instead we would prefer \textbf{highest posterior density intervals} defined as
+\begin{equation*}
+    \mathrm{HPD}_\alpha=\Theta= \{ \theta: \p(\theta|\D)\ge p^* \}
+\end{equation*}
+satisfying
+\begin{equation*}
+    \int_\Theta\p(\theta|\D)d\theta=1-\alpha
+\end{equation*}
+which look like 
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+        domain=-7:7,
+        axis lines = left,
+        no marks,
+        ]
+            \addplot+[smooth,blue,name path=A] {0.5*exp(-(x-3)^2/2)/(2*pi)^0.5+0.5*exp(-(x+3)^2/2)/(2*pi)^0.5};
+            \addplot+[draw=none,name path=B] {0}; 
+            \addplot+[gray] fill between[of=A and B,soft clip={domain=-5:-1}]; % filling
+            \addplot+[gray] fill between[of=A and B,soft clip={domain=1:5}]; % filling
+        \end{axis}
+    \end{tikzpicture}
+\end{figure}
+
+\subsection{Frequentist statistics}
+In frequentist framework or objective statistics, model parameters are unknown constants to be estimated. Uncertainty is represented by the distribution of an estimator. An \textbf{estimator} is a function of the data $\D$ or a decision procedure that specifies an action based on observed data. The estimator's \textbf{sampling distribution} can be describe as taking multiple datasets of size $N\rightarrow\infty$, compute the estimator $\hat{\theta}=f(\D)$
+
+\textbf{Parametric bootstrap} is a procedure to approximate a sampling distribution from an estimator. First of all we need to know the true distribution of the data $\D\sim\p(\cdot)$ and true parameters $\theta^*$, then 
+\begin{algorithm}[H]
+\begin{algorithmic}
+    \State $\D\sim\p(\theta^*)$
+    \For{$s=1$ to  $S$}
+        \State $\D^s \sim \p(\theta^*)$
+        \State $\theta_s=f(\D^s)$
+        \State append $\theta$ to $\Theta$
+    \EndFor
+    \State \textbf{return} $\Theta$
+\end{algorithmic}
+\caption{Parametric bootstrap}
+\end{algorithm}
+
+\textbf{Non-parametric bootstrap} is similar to parametric bootstrap, but used for cases when true parameters and distribution are unknown, only one dataset $\D^*$ is available. The procedure is the same as in parametric bootstrap but sampling is done from $\D^*$ with replacement.
+
+\textbf{Confidence intervals} at $\alpha$ confidence are intervals $(\alpha_1,\alpha_2)$ such that
+\begin{equation*}
+    \p(\alpha_1\le \hat{\theta}-\theta^* \le\alpha_2)=1-\alpha
+\end{equation*}
+Some metrics use to evaluate estimators are
+\begin{align*}
+    \mathrm{bias}(\hat{\theta}) &= \e{\hat{\D}}-\theta^*\\
+    \var{\hat{\theta}} &= \e{(\hat{\theta}(\D) - \e{\hat{\theta}(\D)} )^2 }\\
+    \e{(\hat{\theta} - \theta^*)^2} &= \var{\hat{\theta}} + \mathrm{bias}^2(\hat{\theta})
+\end{align*}
+
+\end{document}
