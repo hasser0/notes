@@ -1,0 +1,124 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+
+
+\subsubsection{AWS S3 - Security}
+\begin{itemize}
+    \item User-based(IAM policies)
+    \item Resource based
+    \begin{itemize}
+        \item Bucket policies
+        \item Object ACL
+        \item Bucket ACL
+    \end{itemize}
+    \item Role based(EC2 Role)
+\end{itemize}
+
+\subsubsection{AWS S3 - Versioning}
+\begin{itemize}
+    \item Null version
+    \item Delete marker version
+\end{itemize}
+
+\subsubsection{AWS S3 - Replication}
+\begin{itemize}
+    \item Types
+    \begin{itemize}
+        \item CRR(lower latency, compliance)
+        \item SRR(env replication)
+    \end{itemize}
+    \item Versioning must be enabled
+    \item Can replicate across different accounts
+    \item S3 Batch Replication
+\end{itemize}
+
+\subsubsection{AWS S3 - Lifecycle rules}
+\begin{itemize}
+    \item Current version transition
+    \item Current version expiration
+    \item Non current version transition
+    \item Non current version expiration
+    \item Delete incomplete multipart-load
+\end{itemize}
+
+\subsubsection{AWS S3 - Notifications}
+\begin{itemize}
+    \item SQS
+    \item Lambda
+    \item SNS
+\end{itemize}
+
+\subsubsection{AWS S3 - Performance}
+\begin{itemize}
+    \item 100-200ms latency
+    \item 3500 PUT/COPY/POST/DELETE or 5500 GET/HEAD request per second per prefix
+    \item Multipart upload
+    \item S3 Transfer Acceleration(AWS private network)
+    \item S3 Byte-Range Fetches(parallelize GET)
+\end{itemize}
+
+\subsubsection{AWS S3 - Encryption}
+\begin{itemize}
+    \item SSE S3(AES256, enabled by default)
+    \item SSE KMS(extra cost per request)
+    \item SSE Customer(encryption key provided on each request)
+    \item CSE (client manage encryption and decryption)
+    \item Force encryption on transit
+\end{itemize}
+
+\subsubsection{AWS S3 - Access Points}
+\begin{itemize}
+    \item Avoid complicated bucket policy
+    \item Simpolify S3 security rules to IAM users
+    \item VPC Origin Access Point from a VPC
+    \item S3 Object Lambda Access Point to transform data before retrieve
+\end{itemize}
+
+\subsubsection{AWS EBS Volume}
+\begin{itemize}
+    \item Multiattach
+    \item Network Storage
+    \item Elastic Volumes(increase size and change volume type)
+\end{itemize}
+
+\subsubsection{AWS EFS}
+\begin{itemize}
+    \item NFS
+    \item Multiattach
+    \item High availability, scalable, expensive
+    \item Encryption at rest(KMS)
+    \item Performance mode
+    \begin{itemize}
+        \item General mode
+        \item Max I/O
+    \end{itemize}
+    \item Throughput mode
+    \begin{itemize}
+        \item Bursting(scale with data)
+        \item Provisioned(known workload)
+        \item Elastic(scale based on demand)
+    \end{itemize}
+    \item Storage tiers
+    \begin{itemize}
+        \item Standard
+        \item Archive
+        \item IA
+        \item Lifecycle policy
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{AWS Backup}
+\begin{itemize}
+    \item Fully managed central place to manage storage backups
+    \item PITR(Point In Time Recovery)
+    \item Backup plans
+    \begin{itemize}
+        \item Retention
+        \item Frequency
+        \item Transition
+    \end{itemize}
+    \item WORM(Write Once Read Many)
+\end{itemize}
+
+\end{document}

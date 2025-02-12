@@ -1,0 +1,129 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+
+\subsubsection{AWS DynamoDB}
+\begin{itemize}
+    \item NoSQL serverless
+    \item Horizontal scaling
+    \item Limited joins
+    \item No aggregations
+    \item Concepts
+    \begin{itemize}
+        \item Table
+        \item Primary key
+        \begin{itemize}
+            \item Hash
+            \item Partition key + sort key
+        \end{itemize}
+        \item Items(rows, 400Kb at most)
+        \item Attributes
+        \begin{itemize}
+            \item String
+            \item Number
+            \item Binary
+            \item Boolean
+            \item List
+            \item Map
+            \item Set
+            \item Null
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{AWS DynamoDB - Throughput}
+\begin{itemize}
+    \item Provisioned mode
+    \begin{itemize}
+        \item Fixed RCU and WCU
+        \item Burst capacity: exceed the limit temporarily
+        \item RCU and WCU are evenlly spread across partitions
+    \end{itemize}
+    \item Autoscaling
+    \item On demand mode(read and writes scale up and down)
+    \item  $WCU = items\ per\ second \cdot \ceil{item\ size\ kb}$
+    \item  $RCU = \frac{items\ per\ second}{2\ or\ 1} \cdot \frac{\ceil{item\ size\ kb}_4}{4}$
+    \item Strongly or eventually consistent reads
+\end{itemize}
+
+\subsubsection{AWS DynamoDB - APIs}
+\begin{itemize}
+    \item PutItem
+    \item UpdateItem
+    \item GetItem
+    \item Query
+    \item Conditional Writes
+    \begin{itemize}
+        \item KeyConditionExpression(specific partition key and range sort key)
+        \item FilterExpression(non-key attributes)
+    \end{itemize}
+    \item Scan(ParallelScan)
+    \item DeleteItem
+    \item DeleteTable
+    \item BatchWriteItem
+    \item BatchGetItem
+    \item PartiQL
+\end{itemize}
+
+\subsubsection{AWS DynamoDB - Indexes}
+\begin{itemize}
+    \item LSI(Local Secondary Index)
+    \begin{itemize}
+        \item Alternative to sort key
+        \item Defined at creation time
+    \end{itemize}
+    \item GSI(General Secondary Index)
+    \begin{itemize}
+        \item Completely alternative primary key
+        \item Like a new Table
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{AWS DynamoDB - DynamoDB Accelerator}
+\begin{itemize}
+    \item In memory cache for DynamoDB
+    \item Microsecond latency for "hot key" problem
+    \item Provision a DAX cluster
+    \item Use DAX over ElasticCache for single object or query/scan
+\end{itemize}
+
+\subsubsection{AWS DynamoDB - DynamoDB Streams}
+\begin{itemize}
+    \item CDC for DynamoDB
+    \item Can be stream to
+    \begin{itemize}
+        \item Kinesis Data Streams
+        \item Lambda
+    \end{itemize}
+    \item 24 hours data retention
+    \item Choose the data that will be written to the stream
+\end{itemize}
+
+\subsubsection{AWS DynamoDB - Extra Feature}
+\begin{itemize}
+    \item TTL
+    \begin{itemize}
+        \item Delete items automatically up to 48hrs
+        \item Provide a field with unix timestamp and enable TTL
+    \end{itemize}
+
+    \item S3 Patterns
+    \begin{itemize}
+        \item Save large objects in S3 and object references in DynamoDB
+        \item Save S3 objects metadata in DynamoDB
+    \end{itemize}
+
+    \item Security
+    \begin{itemize}
+        \item VPC Endpoints
+        \item Access fully controlled by IAM
+        \item Encryption at rest with KMS
+        \item Encryption in transit with SSL/TLS
+    \end{itemize}
+
+    \item Backup and Restore(PITR)
+    \item Global Tables
+    \item DynamoDB Local
+\end{itemize}
+
+\end{document}
