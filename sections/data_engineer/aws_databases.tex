@@ -2,7 +2,7 @@
 
 \begin{document}
 
-\subsubsection{AWS DynamoDB}
+\subsection{AWS DynamoDB}
 \begin{itemize}
     \item NoSQL serverless
     \item Horizontal scaling
@@ -31,7 +31,7 @@
     \end{itemize}
 \end{itemize}
 
-\subsubsection{AWS DynamoDB - Throughput}
+\subsection{AWS DynamoDB - Throughput}
 \begin{itemize}
     \item Provisioned mode
     \begin{itemize}
@@ -46,7 +46,7 @@
     \item Strongly or eventually consistent reads
 \end{itemize}
 
-\subsubsection{AWS DynamoDB - APIs}
+\subsection{AWS DynamoDB - APIs}
 \begin{itemize}
     \item PutItem
     \item UpdateItem
@@ -65,7 +65,7 @@
     \item PartiQL
 \end{itemize}
 
-\subsubsection{AWS DynamoDB - Indexes}
+\subsection{AWS DynamoDB - Indexes}
 \begin{itemize}
     \item LSI(Local Secondary Index)
     \begin{itemize}
@@ -79,7 +79,7 @@
     \end{itemize}
 \end{itemize}
 
-\subsubsection{AWS DynamoDB - DynamoDB Accelerator}
+\subsection{AWS DynamoDB - DynamoDB Accelerator}
 \begin{itemize}
     \item In memory cache for DynamoDB
     \item Microsecond latency for "hot key" problem
@@ -87,7 +87,7 @@
     \item Use DAX over ElasticCache for single object or query/scan
 \end{itemize}
 
-\subsubsection{AWS DynamoDB - DynamoDB Streams}
+\subsection{AWS DynamoDB - DynamoDB Streams}
 \begin{itemize}
     \item CDC for DynamoDB
     \item Can be stream to
@@ -99,20 +99,18 @@
     \item Choose the data that will be written to the stream
 \end{itemize}
 
-\subsubsection{AWS DynamoDB - Extra Feature}
+\subsection{AWS DynamoDB - Extra Feature}
 \begin{itemize}
     \item TTL
     \begin{itemize}
         \item Delete items automatically up to 48hrs
         \item Provide a field with unix timestamp and enable TTL
     \end{itemize}
-
     \item S3 Patterns
     \begin{itemize}
         \item Save large objects in S3 and object references in DynamoDB
         \item Save S3 objects metadata in DynamoDB
     \end{itemize}
-
     \item Security
     \begin{itemize}
         \item VPC Endpoints
@@ -120,10 +118,140 @@
         \item Encryption at rest with KMS
         \item Encryption in transit with SSL/TLS
     \end{itemize}
-
     \item Backup and Restore(PITR)
     \item Global Tables
     \item DynamoDB Local
+\end{itemize}
+
+\subsection{AWS RDS}
+\begin{itemize}
+    \item AWS Aurora
+    \begin{itemize}
+        \item Fastest in AWS
+        \item up to 15 read replicas
+        \item S3 Backup
+        \item CRR and SRR
+        \item Serverless option
+        \item Exclusive lock(no reads nor writes)
+        \item Share lock(no writes)
+    \end{itemize}
+    \item MySQL, PostreSQL, MariaDB, Oracle, SQLServer
+    \item Not for big data
+    \item ACID compliant
+\end{itemize}
+
+\subsection{AWS RDS - Best practices}
+\begin{itemize}
+    \item Monitor using Cloud Watch
+    \item Backups in low times
+    \item Set TTl to 30 seconds or less
+    \item Test failover
+    \item Rate limits to external API
+    \item Create Indexes and avoid full scan
+\end{itemize}
+
+\subsection{Other AWS Databases}
+\begin{itemize}
+    \item DocumentDB
+    \begin{itemize}
+        \item NoSQL
+        \item MongoDB based document database
+        \item Fully managed database
+        \item JSON data
+        \item MultiAZ
+    \end{itemize}
+    \item MemoryDB
+    \begin{itemize}
+        \item Redis compatible, durable in-memory database
+        \item MultiAZ
+    \end{itemize}
+    \item KeySpaces
+    \begin{itemize}
+        \item NoSQL
+        \item Apache Cassandra based database
+        \item Automatically scale tables up and down
+        \item MultiAZ
+        \item Single digit millisecond latency at any scale using CQL
+        \item On-demand mode and autoscaling mode
+    \end{itemize}
+    \item Neptune
+    \begin{itemize}
+        \item Fully managed graph database
+        \item MultiAZ and read replicas
+        \item SPARQL
+        \item Gremlin
+        \item openCypher
+    \end{itemize}
+    \item Timestream
+    \begin{itemize}
+        \item Fully managed serverless time series database
+        \item Automatically scale capacity
+        \item Trillions of events per second
+        \item Faster and cheaper than relational databases
+        \item SQL compatible
+        \item AWS IOT, Kinesis with Lambda, Kinesis with Flink
+    \end{itemize}
+\end{itemize}
+
+
+\subsection{AWS Redshift - Architecture}
+\begin{itemize}
+    \item Fully managed data warehouse
+    \item OLAP
+    \item Performance
+    \begin{itemize}
+        \item Columnar data storage
+        \item Column compression
+        \item Massively Parallel Proccesing
+    \end{itemize}
+    \item Architecture
+    \begin{itemize}
+        \item Clusters(leader nodes and compute nodes)
+        \item Leader nodes orchestrate and interact with clients
+        \item Compute nodes execute
+        \item Node slices are partitions
+    \end{itemize}
+\end{itemize}
+
+\subsection{AWS Redshift - Spectrum}
+\begin{itemize}
+    \item Query unstructured exabytes in S3
+    \item Separate storage and compute
+    \item Multiple data formats
+    \item Support gzip and snappy compression
+\end{itemize}
+
+\subsection{AWS Redshift - Durability and scalability}
+\begin{itemize}
+    \item Replica and backup automatically
+    \item Vertical and horizontal scale
+    \item Scale creates a new cluster and moves data
+    \item RA3 cluster support MultiAZ availability
+\end{itemize}
+
+\subsection{AWS Redshift - Distribution styles}
+\begin{itemize}
+    \item AUTO: Optimal distribution style based on data size
+    \item EVEN: Round Robin
+    \item KEY: Base on one column
+    \item ALL: Entire table is copied on every node
+\end{itemize}
+
+\subsection{AWS Redshift - Data flow}
+\begin{itemize}
+    \item COPY
+    \begin{itemize}
+        \item Import data from S3, EMR, DynamoDB
+        \item Can decrypt data as loaded
+        \item In transit compression supported
+        \item Single COPY for narrow table
+    \end{itemize}
+    \item UNLOAD: Export data to S3 files
+    \item Enhance VPC routing to avoid public network
+    \item Auto-copy from S3
+    \item Amazon Aurora zero ETL integration
+    \item Redshift Streaming Ingestion(from Kinesis)
+    \item DBLink: Connect Redshift to PostreSQL
 \end{itemize}
 
 \end{document}

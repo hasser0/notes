@@ -2,17 +2,27 @@
 
 \begin{document}
 
+\subsection{Databases - ACID}
+\begin{definition}[Transaction]
+    Collection of queries treated as a unit of work.
+    \begin{itemize}
+        \item Usually for insert and modify data.
+        \item For read only transaction you can keep consistency.
+        \item Use keywords BEGIN, COMMIT and ROLLBACK.
+    \end{itemize}
+\end{definition}
+\begin{definition}[Atomicity]
+    All queries in a transaction must succeed, otherwise all prior successfull queries must be rollback.
+\end{definition}
+
 
 \subsection{Reliability, Scalability and Mantainability}
-
 \begin{definition}[Reliability]
     Keep working with hardware, software and human errors. To implement is important to decouple and isolate components, seek faults over failure, make easy to do the right thing and discourage the wrong, make fast to roll back changes.
 \end{definition}
-
 \begin{definition}[Scalability]
     Reasonable ways to deal with grows. To implement reliability is important to describe with metrics.
 \end{definition}
-
 \begin{definition}[Maintainability]
     It is divided into three parts
     \begin{itemize}
