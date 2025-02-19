@@ -41,8 +41,8 @@
     \end{itemize}
     \item Autoscaling
     \item On demand mode(read and writes scale up and down)
-    \item  $WCU = items\ per\ second \cdot \ceil{item\ size\ kb}$
-    \item  $RCU = \frac{items\ per\ second}{2\ or\ 1} \cdot \frac{\ceil{item\ size\ kb}_4}{4}$
+    \item $WCU = items\ per\ second \cdot \ceil{item\ size\ kb}$
+    \item $RCU = \frac{items\ per\ second}{2\ or\ 1} \cdot \frac{\ceil{item\ size\ kb}_4}{4}$
     \item Strongly or eventually consistent reads
 \end{itemize}
 
@@ -194,7 +194,7 @@
 \end{itemize}
 
 
-\subsection{AWS Redshift - Architecture}
+\subsection{AWS Redshift}
 \begin{itemize}
     \item Fully managed data warehouse
     \item OLAP
@@ -207,9 +207,16 @@
     \item Architecture
     \begin{itemize}
         \item Clusters(leader nodes and compute nodes)
-        \item Leader nodes orchestrate and interact with clients
+        \item Leader nodes: parse queries, manage communications with clients and between compute nodes
         \item Compute nodes execute
         \item Node slices are partitions
+    \end{itemize}
+    \item Antipatterns
+    \begin{itemize}
+        \item Small datasets(RDS)
+        \item OLTP systems(RDS or DynamoDB)
+        \item Unstructured data(ETL with EMR)
+        \item Blob data(store S3 references)
     \end{itemize}
 \end{itemize}
 
@@ -217,24 +224,23 @@
 \begin{itemize}
     \item Query unstructured exabytes in S3
     \item Separate storage and compute
-    \item Multiple data formats
+    \item Multiple open data formats
     \item Support gzip and snappy compression
 \end{itemize}
 
-\subsection{AWS Redshift - Durability and scalability}
+\subsection{AWS Redshift - Durability, scalability, and distribution}
 \begin{itemize}
     \item Replica and backup automatically
     \item Vertical and horizontal scale
     \item Scale creates a new cluster and moves data
     \item RA3 cluster support MultiAZ availability
-\end{itemize}
-
-\subsection{AWS Redshift - Distribution styles}
-\begin{itemize}
-    \item AUTO: Optimal distribution style based on data size
-    \item EVEN: Round Robin
-    \item KEY: Base on one column
-    \item ALL: Entire table is copied on every node
+    \item Distribution styles
+    \begin{itemize}
+        \item AUTO: Optimal distribution style based on data size
+        \item EVEN: Round Robin
+        \item KEY: Base on one column
+        \item ALL: Entire table is copied on every node
+    \end{itemize}
 \end{itemize}
 
 \subsection{AWS Redshift - Data flow}
@@ -252,6 +258,101 @@
     \item Amazon Aurora zero ETL integration
     \item Redshift Streaming Ingestion(from Kinesis)
     \item DBLink: Connect Redshift to PostreSQL
+\end{itemize}
+
+\subsection{AWS Redshift - Workload Management}
+\begin{itemize}
+    \item WLM prepares and prioritize queries
+    \item Prioritize short-fast over long-slow queries
+    \item Can create up to 8 queues, default 5 queues
+    \item Concurrency scaling cluster: add additional cluster capacity
+    \item Short Query Accelaration
+    \item Automatic WLM
+    \begin{itemize}
+        \item Priority queue
+        \item User group queue
+        \item Query group queue
+        \item Query monitoring rules
+    \end{itemize}
+    \item Manual WLM
+    \begin{itemize}
+        \item Superuser queue, concurrency level 1
+        \item Default queue, concurrency level 5
+        \item Up to 50 concurrency levels(number of queries running concurrently)
+        \item Concurrency scaling mode
+    \end{itemize}
+\end{itemize}
+
+\subsection{AWS Redshift - Workload Management}
+\begin{itemize}
+    \item Automatic WLM
+    \begin{itemize}
+        \item Manage concurrency and memory allocation
+        \item Can choose a query to:
+        \begin{itemize}
+            \item Run in main cluster
+            \item Run in concurrency scaling cluster
+            \item Add to queue
+        \end{itemize}
+        \item Queues can tune:
+        \begin{itemize}
+            \item Priority
+            \item Concurrency scaling mode
+            \item User groups
+            \item Query groups
+            \item Query monitoring rules
+        \end{itemize}
+    \end{itemize}
+    \item Manual WLM(discourage)
+    \begin{itemize}
+        \item Default queue has concurrency level of 5
+        \item Superuser queue has concurrency level of 1
+        \item Can add up to 8 queues
+        \item Queue can tune:
+        \begin{itemize}
+            \item Scaling mode
+            \item Concurrency level
+            \item User group
+            \item Query group
+            \item Memory percentage
+            \item Timeout
+            \item Query monitoring rules
+        \end{itemize}
+    \end{itemize}
+    \item Short Query Accelaration
+    \begin{itemize}
+        \item ML predicted duration
+        \item Fixed or dynamic threshold
+    \end{itemize}
+\end{itemize}
+
+
+
+\subsection{AWS Redshift - Vacuum}
+\begin{itemize}
+    \item VACUUM REINDEX: Reindex, recover space and order data
+    \item VACUUM FULL: Recover space and order data
+    \item VACUUM DELETE ONLY: Recover space
+    \item VACUUM SORT ONLY: Order data
+\end{itemize}
+
+\subsection{AWS Redshift - Resizing}
+\begin{itemize}
+    \item Cluster is read only for hours or days
+    \item Elastic resize
+    \begin{itemize}
+        \item Add or remove nodes of same type
+        \item Short downtimes
+    \end{itemize}
+    \item Classic resize
+    \begin{itemize}
+        \item Change node type and number of nodes
+    \end{itemize}
+    \item Snapshot and restore with classic resize
+    \begin{itemize}
+        \item When writes access cannot be interrupted
+        \item Manually copy data written after snapshot
+    \end{itemize}
 \end{itemize}
 
 \end{document}
