@@ -16,19 +16,34 @@
     All queries in a transaction must succeed, otherwise all prior successfull queries must be rollback.
 \end{definition}
 
+\begin{definition}[Consistency]
+    Refers to different parts of the data retrieving different information.
+    \begin{itemize}
+        \item Consistency in data: Referential integrity and business logic
+        \item Consistency in reads: Retrieve the latest change as soon as committed.
+        \begin{itemize}
+            \item Eventual consistency
+            \item Strong consistency
+        \end{itemize}
+    \end{itemize}
+\end{definition}
+
 \begin{definition}[Isolation]
     When multiple transactions read and write at the same time, inconsistency in the share data may arise. Therefore, run transactions in isolation one from others is very important
     \begin{itemize}
-        \item Dirty reads
-        \item Non repeatable reads
-        \item Phantom reads
-        \item Lost updates
+        \item Isolation problems
+        \begin{itemize}
+            \item Dirty reads: read uncommitted data
+            \item Non repeatable reads: read committed data, updated in the middle of transaction
+            \item Phantom reads: read committed data, inserted in the middle of transaction
+            \item Lost updates: two transactions updating at the exact same time
+        \end{itemize}
         \item Isolation levels
         \begin{itemize}
-            \item Read uncommitted: any change from outside is visible to the transaction
-            \item Read commited: only see committed changes
-            \item Repeatable read: resources remain unchange while transaction is running
-            \item Snapshot: only see committed changes up to the start of the transaction
+            \item Read uncommitted: uncommitted changes from outside are visible to the transaction
+            \item Read committed: committed changes from outside are visible to the transaction
+            \item Repeatable read: make sure not changes are done
+            \item Snapshot: committed changes up to the start of the transaction
             \item Serializable
         \end{itemize}
         \item Locks
@@ -37,6 +52,16 @@
             \item optimistic(no locks)
             \item repeatable reads lock
         \end{itemize}
+    \end{itemize}
+\end{definition}
+
+
+\begin{definition}[Durability]
+    Changes made by committed transactions must be persisted in a durable non-volatile storage
+    \begin{itemize}
+        \item Write ahead log
+        \item Asynchoronous snapshot
+        \item Append only file
     \end{itemize}
 \end{definition}
 

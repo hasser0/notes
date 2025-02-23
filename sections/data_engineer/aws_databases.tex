@@ -355,4 +355,78 @@
     \end{itemize}
 \end{itemize}
 
+\subsection{AWS Redshift - Security}
+\begin{itemize}
+    \item Superuser, users, groups and roles
+    \item Role based access control
+    \item Column - Row level security
+    \item Dynamic data masking
+\end{itemize}
+
+\subsection{AWS Redshift - Serverless}
+\begin{itemize}
+    \item Automatic scaling and provisioning
+    \item Optimize costs and performance
+    \item RPU-hours(redshift processing units)
+    \begin{itemize}
+        \item base rpus
+        \item max rpus
+    \end{itemize}
+    \item Monitoring CloudWatch Logs, CloudWatch Metrics
+    \item Not supported public endpoints
+\end{itemize}
+
+\subsection{AWS Redshift - UDF}
+\begin{itemize}
+    \item SQL UDFs
+    \item Python UDFs
+    \item Lambda UDFs
+    \item Need a role
+    \item Create external function
+    \item Grant usage on language
+\end{itemize}
+
+\subsection{AWS Redshift - Other features}
+\begin{itemize}
+    \item RA3 nodes decouple compute and storage
+    \item Spatial data types
+    \item Redshift ML
+    \item Redshift materialized views
+    \begin{itemize}
+        \item Auto refresh option(each time a change is made)
+        \item Stack materialized views
+        \item REFRESH materialized view
+    \end{itemize}
+    \item Redshift Data Lake Export
+\end{itemize}
+
+\subsection{AWS Redshift - Share}
+\begin{itemize}
+    \item Federated query
+    \begin{itemize}
+        \item Read only access and extra cost for traffic
+        \item Query across databases, warehouses, and lakes
+        \item Create external schema
+    \end{itemize}
+    \item Data sharing
+    \begin{itemize}
+        \item Share live data
+        \item Share across clusters, workgroups, accounts, regions
+        \item Share databases, schemas, tables, views, udfs
+        \item Use cases
+        \begin{itemize}
+            \item Cross group collaboration
+            \item Sharing data between dev/test/prod
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\subsection{AWS Redshift - API}
+\begin{itemize}
+    \item Asynchoronous
+    \item 1st call identifier
+    \item 2nd call retrieve results
+    \item AWS SDK
+\end{itemize}
+
 \end{document}
