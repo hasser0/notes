@@ -1,5 +1,4 @@
 {
-    "latex-workshop.latex.autoBuild.run": "never",
     "latex-workshop.latex.recipe.default": "first",
     "latex-workshop.latex.recipes": [
         {
@@ -106,6 +105,7 @@
     ],
     "latex-workshop.latex.rootFile.useSubFile": true,
     "latex-workshop.latex.rootFile.indicator": "\\documentclass[]{}",
+    "latex-workshop.latex.autoBuild.run": "onSave",
     "latex-workshop.latex.autoClean.run": "onBuilt",
     "latex-workshop.latex.outDir": "./build"
 }

@@ -25,6 +25,13 @@
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{subfiles}
+\usepackage{tocloft}
+
+% Table of contents
+\renewcommand*{\cftsecdotsep}{4.5}  % use dots in the section entries
+\renewcommand*{\cftsecnumwidth}{3em} % increase space for Roman numerals
+\renewcommand*{\cftsubsubsecindent}{2em} % reduce indent of subsubsection titles 
+
 
 % Probability
 \newcommand{\p}{\mathcal{P}}
@@ -71,3 +78,40 @@
 \date{September 2022}
 \setcounter{secnumdepth}{1}
 \setcounter{tocdepth}{3}
+
+% Code listings
+\usepackage{listings}
+\RequirePackage{listings}
+
+\lstdefinelanguage{Golang}
+{
+    morekeywords=[1]{package,import,func,type,struct,return,defer,panic,%
+    recover,select,var,const,iota,},%
+    morekeywords=[2]{string,uint,uint8,uint16,uint32,uint64,int,int8,int16,%
+    int32,int64,bool,float32,float64,complex64,complex128,byte,rune,uintptr,%
+    error,interface},%
+    morekeywords=[3]{map,slice,make,new,nil,len,cap,copy,close,true,false,%
+    delete,append,real,imag,complex,chan,},%
+    morekeywords=[4]{for,break,continue,range,go,goto,switch,case,fallthrough,if,%
+    else,default,},%
+    morekeywords=[5]{Println,Printf,Error,Print,},%
+    sensitive=true,%
+    morecomment=[l]{//},%
+    morecomment=[s]{/*}{*/},%
+    morestring=[b]',%
+    morestring=[b]",%
+    morestring=[s]{`}{`},%
+}
+\usepackage{color}
+
+\lstset{ % add your own preferences
+    frame=single,
+    basicstyle=\footnotesize,
+    keywordstyle=\color{red},
+    numbers=left,
+    numbersep=5pt,
+    showstringspaces=false,
+    stringstyle=\color{blue},
+    tabsize=4,
+    language=Golang % this is it !
+}
