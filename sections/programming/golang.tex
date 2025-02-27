@@ -3,14 +3,24 @@
 
 \begin{document}
 
+\subsection{Commands}
 \lstinputlisting[language=bash, caption=Shell commands]{golangCommands.sh}
 
-When `go run main.go` is run, `init` function runs first and then `main` function runs.
-
+\subsection{Program structure}
+First \textbf{init function}, then \textbf{main function}
 \lstinputlisting[caption=Hello World code]{golangHelloWorld.go}
 
+\subsection{Variables and data types}
 \lstinputlisting[caption=Variables and constants]{golangVariables.go}
 
+\subsection{Control flow}
 \lstinputlisting[caption=Control flow]{golangControlFlow.go}
+
+\subsection{Composite types}
+\begin{itemize}
+    \item Array: Same type, fixed size, used for go internals, $len = cap$
+    \item Slice: Same type, dynamic size, $len \le cap$
+\end{itemize}
+\lstinputlisting[caption=Composite types]{golangCompositeTypes.go}
 
 \end{document}
