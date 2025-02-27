@@ -34,18 +34,18 @@
     \begin{itemize}
         \item Isolation problems
         \begin{itemize}
-            \item Dirty reads: read uncommitted data
-            \item Non repeatable reads: read committed data, updated in the middle of transaction
-            \item Phantom reads: read committed data, inserted in the middle of transaction
-            \item Lost updates: two transactions updating at the exact same time
+            \item Dirty reads: uncommitted data
+            \item Non repeatable reads: committed updates(same rows)
+            \item Phantom reads: committed inserts/deletes(new rows or removed rows)
+            \item Lost updates: updating at the exact same time
         \end{itemize}
         \item Isolation levels
         \begin{itemize}
-            \item Read uncommitted: uncommitted changes from outside are visible to the transaction
-            \item Read committed: committed changes from outside are visible to the transaction
-            \item Repeatable read: make sure not changes are done
-            \item Snapshot: committed changes up to the start of the transaction
-            \item Serializable
+            \item Read uncommitted: -
+            \item Read committed: dirty reads
+            \item Repeatable read: dirty reads, non repeatable reads
+            \item Snapshot: dirty reads, non reapetable reads, phantom reads
+            \item Serializable: dirty reads, non repeatable reads, phantom reads, lost updates
         \end{itemize}
         \item Locks
         \begin{itemize}
@@ -56,7 +56,6 @@
     \end{itemize}
 \end{definition}
 
-
 \begin{definition}[Durability]
     Changes made by committed transactions must be persisted in a durable non-volatile storage
     \begin{itemize}
@@ -66,7 +65,55 @@
     \end{itemize}
 \end{definition}
 
+\begin{definition}[Eventually consistent]
+    Whenever a database is in two or more different places(replication, caching distributed) it becomes inconsistent in reads. The system will replicate the change and become eventually consistent.
+\end{definition}
 
+
+\subsection{Database internals}
+\begin{itemize}
+    \item Elements
+    \begin{itemize}
+        \item Row id: Database internal id for each row, possibly independent of business id
+        \item Page: Fundamental unit of storage. Can store tables, rows, columns, indexes, sequences, documents, etc. Pages are read by filename, by offset and by length and this is why fixed size data types is better than variable lenght size data types.
+        \item Heap: Dedicated place to store tables as pages
+        \item Primary key: Piece of data that uniquely identifies it.
+        \item Index: Structure that enhance data access
+        \item Primary index:
+        \begin{itemize}
+            \item Clustered index
+            \item Index that defines physical order of a table
+            \item Sometimes defined by primary key
+            \item Not duplicates guaranteed
+        \end{itemize}
+        \item Secondary index
+        \begin{itemize}
+            \item Addition
+            \item Structure to reduce IO operations in a query by reading specific pages
+            \item May have duplicates
+        \end{itemize}
+        \item 
+    \end{itemize}
+\end{itemize}
+
+
+Types of databases
+\begin{center}
+    \begin{tabular}{ |c|c|c| }
+    \hline
+    & Row store & Column store \\
+    \hline
+    \hline
+    System type & OLTP & OLAP \\
+    \hline
+    Optimize for & Read/Write & Aggregation/Compression \\
+    \hline
+    Slow at & Aggregation/Compression & Read/Write \\
+    \hline
+    Multicolumns & Efficient & Inefficient \\
+    \hline
+    \end{tabular}
+\end{center}
 
 \subsection{Reliability, Scalability and Mantainability}
 \begin{definition}[Reliability]
