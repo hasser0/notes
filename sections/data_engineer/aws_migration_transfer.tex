@@ -1,0 +1,83 @@
+% !TEX root = ../../main.tex
+\documentclass[../../main.tex]{subfiles}
+
+\begin{document}
+
+\subsection{AWS Application Discovery Service}
+\begin{itemize}
+    \item Migrate system to AWS
+    \item Agentless:
+    \begin{itemize}
+        \item Collect system performance
+        \item Collect network settings
+    \end{itemize}
+    \item Agent based:
+    \begin{itemize}
+        \item Deploy Discovery Agent to all servers
+        \item Collect static configuration data
+        \item Collect detailed system performance
+        \item Collect detailed network performance
+    \end{itemize}
+    \item AWS Migration Hub
+    \begin{itemize}
+        \item View and manage data collectors
+    \end{itemize}
+    \item AWS Application MiGratioN Service:
+    \begin{itemize}
+        \item lift-shift
+        \item cutover
+        \item minimal downtime
+    \end{itemize}
+\end{itemize}
+
+\subsection{AWS Database Migration Service}
+\begin{itemize}
+    \item Migrate databases relational, data warehouses, NoSQL and other type of databases
+    \item Database remains available
+    \item AWS SCT for heterogeneous migration
+    \item CDC (Change Data Capture)
+    \item Types of database migrations tasks
+    \begin{itemize}
+        \item Serverless
+        \item EC2 instance
+    \end{itemize}
+    \item Source and Target endpoints
+\end{itemize}
+
+\subsection{AWS Data Sync}
+\begin{itemize}
+    \item Move large incoming/outcoming amounts of data
+    \item Targets: S3, EFS, FSx
+    \item Sources:
+    \begin{itemize}
+        \item On premises(HDFS, SMB, NFS, etc)
+        \item Other clouds(GCS, Blob Storage, etc)
+        \item S3, EFS, FSx
+    \end{itemize}
+    \item Used when network capacity is enough
+    \item Schedule tasks
+    \item Preserve metadata
+    \item AWS Data Sync Agent
+    \begin{itemize}
+        \item Transfer to or from on premises
+        \item Transfer to or from other cloud
+        \item Transfer to or from snow family
+    \end{itemize}
+\end{itemize}
+
+\subsection{Other AWS Transfer Services}
+\begin{itemize}
+    \item AWS Snow Family
+    \begin{itemize}
+        \item Storage(210TB) and Compute(80TB) optimize
+        \item Edge processing or migration
+    \end{itemize}
+    \item AWS Transfer Family
+    \begin{itemize}
+        \item FTP
+        \item SFTP(SSH + FTP)
+        \item FTPS(FTP + TSL/SSL)
+    \end{itemize}
+\end{itemize}
+
+\end{document}
