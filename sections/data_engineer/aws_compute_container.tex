@@ -1,0 +1,101 @@
+% !TEX root = ../../main.tex
+\documentclass[../../main.tex]{subfiles}
+
+\begin{document}
+
+\subsection{AWS EC2 in Big Data}
+\begin{itemize}
+    \item Instances types usage
+    \begin{itemize}
+        \item Spot instance: Checkpoint workloads
+        \item Reserved: Long running clusters or databases
+        \item On demand: other workloads
+    \end{itemize}
+    \item Autoscaling is used by
+    \begin{itemize}
+        \item EMR
+        \item DynamoDB
+    \end{itemize}
+    \item AWS Graviton: AWS processor
+    \begin{itemize}
+        \item Larger L1, L2 cache
+        \item Isolated physical cores
+    \end{itemize}
+    \item AWS Graviton can be used in:
+    \begin{itemize}
+        \item MSK
+        \item RDS, MemoryDB, Elastic Cache
+        \item OpenSearch
+        \item EMR
+        \item Lambda
+        \item Fargate
+    \end{itemize}
+\end{itemize}
+
+\subsection{AWS Lambda}
+\begin{itemize}
+    \item Glue between services
+    \item Use cases:
+    \begin{itemize}
+        \item Serverless website
+        \item Connect AWS services that cannot interact directly
+        \item AWS Events
+        \item Cron jobs
+        \item Real time file processing
+        \item Real time stream processing
+        \item AWS API Gateway - AWS Lambda - [AWS Cognito, AWS DynamoDB, AWS S3]
+        \item AWS Kinesis Streams - AWS Lambda - [AWS DynamoDB, AWS SNS]
+    \end{itemize}
+    \item Lambda triggers
+    \begin{itemize}
+        \item AWS S3
+        \item AWS SES
+        \item AWS Kinesis Streams, AWS Kinesis Firehose
+        \item AWS DynamoDB
+        \item AWS Redshift
+        \item AWS SNS
+        \item AWS SQS
+        \item AWS Config
+        \item AWS CloudWatch
+        \item AWS CloudFormation
+        \item AWS API Gateway
+        \item AWS CloudFront
+        \item AWS CodeCommit
+        \item AWS Cognito
+    \end{itemize}
+\end{itemize}
+
+Lambda Storage Options
+\begin{center}
+    \begin{tabular}{ |c|c|c|c|c| }
+    \hline
+    & /tmp & Lambda Layer & AWS S3 & AWS EFS \\
+    \hline
+    \hline
+    Max size & 10GB & 250MB & Elastic & Elastic \\
+    \hline
+    Content & Dynamic & Static & Dynamic & Dynamic \\
+    \hline
+    Persistence & Ephemeral & Durable & Durable & Durable \\
+    \hline
+    Share X invocations & No & Yes & Yes & Yes\\
+    \hline
+    Pricing included & Yes & Yes & No & No \\
+    \hline
+    \end{tabular}
+\end{center}
+
+\subsection{AWS SAM}
+\begin{itemize}
+    \item Develop, deploy and provision serverless applications
+    \item SAM yaml template
+    \item Run locally AWS Lambda, AWS API Gateway, AWS DynamoDB
+\end{itemize}
+
+\subsection{AWS Batch}
+\begin{itemize}
+    \item Run batch jobs as Docker images
+    \item Serverless
+\end{itemize}
+
+\end{document}
