@@ -3,6 +3,7 @@
 
 \begin{document}
 
+
 \subsection{Databases - ACID}
 \begin{definition}[Transaction]
     Collection of queries treated as a unit of work.
@@ -76,25 +77,11 @@
     \begin{itemize}
         \item Row id: Database internal id for each row, possibly independent of business id
         \item Page: Fundamental unit of storage. Can store tables, rows, columns, indexes, sequences, documents, etc. Pages are read by filename, by offset and by length and this is why fixed size data types is better than variable lenght size data types.
-        \item Heap: Dedicated place to store tables as pages
         \item Primary key: Piece of data that uniquely identifies it.
+        \item Heap: Structure to store tables as pages
         \item Index: Structure that enhance data access
-        \item Primary index:
-        \begin{itemize}
-            \item Clustered index
-            \item Index that defines physical order of a table
-            \item Sometimes defined by primary key
-            \item Not duplicates guaranteed
-        \end{itemize}
-        \item Secondary index
-        \begin{itemize}
-            \item Addition
-            \item Structure to reduce IO operations in a query by reading specific pages
-            \item May have duplicates
-        \end{itemize}
     \end{itemize}
 \end{itemize}
-
 
 Types of databases
 \begin{center}
@@ -114,6 +101,65 @@ Types of databases
     \end{tabular}
 \end{center}
 
+
+\subsection{Database Indexing}
+A table in a relational database is store in a heap composed of multiple pages.
+An index is a structure created outside the heap to provide a different access mechanism.
+The order in which data is stored in heap is called physical order, while the order in
+which data is stored in a index is called logical order. The main data structure used to
+create indexes is called B-Tree which is a self-balancing tree with its leaf nodes
+connected as a double linked list. The index contains exclusivelly the columns that it
+was defined; the leftmost column, as the first sorting criteria and the rightmost
+column, as the last sorting criteria. To include other columns not to be used for order,
+but for access it should be added as a non key column.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\textwidth]{btree}
+    \caption{\href{https://use-the-index-luke.com/sql/where-clause/the-equals-operator/concatenated-keys}{B-Tree}}
+\end{figure}
+\begin{itemize}
+    \item Types of indexes
+    \begin{itemize}
+        \item Primary index: Also known as clustered index, is a structure to store data in order usually by a primary key
+        \item Secondary index: Also known as non clustered index, is an structure that provides an alternative way to access data
+        \item Unique indexes
+        \item Single column indexes
+        \item Multi column index
+        \item Bitmap index
+        \item B-Tree index
+        \item Function-based index
+        \begin{itemize}
+            \item Precomputed columns as workaround
+            \item Only deterministic functions must be used
+        \end{itemize}
+    \end{itemize}
+    \item Slow queries causes
+    \begin{itemize}
+        \item Not using indexes: full table scan
+        \item Incorrect index design
+        \begin{itemize}
+            \item Long index range prefer to use full table scan
+            \item Data skew: fetch many rows individually
+            \item Fetch data: mainly from heap
+        \end{itemize}
+    \end{itemize}
+    \item Tips
+    \begin{itemize}
+        \item Combining indexes avoid creating multiple distinct bitmap indexes
+        \item Over indexing induce overhead on update/delete/insert
+        \item Use non-key columns in indexes for common access patterns
+        \item Index must use leftmost subset of columns
+    \end{itemize}
+    \item Index related operations
+    \begin{itemize}
+        \item Index only scan: hit index
+        \item Index unique scan: retrieves single row, hit index and heap
+        \item Index range scan: retrieves multiple rows, hit index and heap
+        \item full table scan: hit heap
+    \end{itemize}
+\end{itemize}
+
+
 \subsection{Reliability, Scalability and Mantainability}
 \begin{definition}[Reliability]
     Keep working with hardware, software and human errors. To implement is important to decouple and isolate components, seek faults over failure, make easy to do the right thing and discourage the wrong, make fast to roll back changes.
@@ -129,5 +175,6 @@ Types of databases
         \item Evolvability: Make easy for engineers to make changes.
     \end{itemize}
 \end{definition}
+
 
 \end{document}
