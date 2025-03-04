@@ -9,11 +9,11 @@ func main() {
 	a3 := [5][2]float{}
 
 	// Slice
-	s1 := []int{1, 2, 3, 4, 5}
-	s2Length := 10
-	s2Capacity := 20
-	s2 := make([]string, s2Length, s2Capacity)
-	s3 := [][]float{[]float{3.1416, 2.7172}, []float{9.81}}
+	xs1 := []int{1, 2, 3, 4, 5}
+	xs2Length := 10
+	xs2Capacity := 20
+	xs2 := make([]string, xs2Length, xs2Capacity)
+	xs3 := [][]float{[]float{3.1416, 2.7172}, []float{9.81}}
 
 	xs = []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
 	// Slicing a slice
@@ -27,5 +27,20 @@ func main() {
 	// Copy slice
 	xsNew := make([]int, len(xs), len(x2) * 2)
 	copy(xsNew, xs)
+
+	// Maps
+	names := map[string]string{
+		"Henry": "Ford",
+		"Thomas": "Jefferson",
+		"Jose": "Migala",
+	}
+	makeMap := make(map[string]string)
+
+	// Map len and delete
+	names = delete(names, "Henry")
+	value, ok := names["Osvaldo"]
+	if !ok {
+		fmt.Println("Osvaldo does not exist")
+	}
 
 }
