@@ -107,7 +107,7 @@ A table in a relational database is store in a heap composed of multiple pages.
 An index is a structure created outside the heap to provide a different access mechanism.
 The order in which data is stored in heap is called physical order, while the order in
 which data is stored in a index is called logical order. The main data structure used to
-create indexes is called B-Tree which is a self-balancing tree with its leaf nodes
+create indexes is called B+Tree which is a self-balancing tree with its leaf nodes
 connected as a double linked list. The index contains exclusivelly the columns that it
 was defined; the leftmost column, as the first sorting criteria and the rightmost
 column, as the last sorting criteria. To include other columns not to be used for order,

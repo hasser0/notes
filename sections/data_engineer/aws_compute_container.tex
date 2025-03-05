@@ -98,4 +98,53 @@ Lambda Storage Options
     \item Serverless
 \end{itemize}
 
+
+\subsection{AWS ECR}
+\begin{itemize}
+    \item Image repository
+    \item Public or private
+    \item S3 as backend
+\end{itemize}
+
+
+\subsection{AWS ECS}
+\begin{itemize}
+    \item Container orchestration service
+    \item EC2 Launch type
+    \begin{itemize}
+        \item Customer provision and mantain infrastructure
+        \item Each EC2 instance must run ECS agent
+        \item AWS start and stop containers
+        \item ELB is supported
+        \item Need ECS Task Role for each service
+        \begin{itemize}
+            \item ECS: API calls
+            \item ECR: image pull
+            \item CloudWatch: send logs
+        \end{itemize}
+    \end{itemize}
+    \item Fargate Launch type: Serverless
+    \item EFS storage only supported
+\end{itemize}
+
+
+\subsection{AWS EKS}
+\begin{itemize}
+    \item Container orchestration
+    \item Manage kubernetes cluster
+    \item Lift and shift for kubernetes
+    \item Node types
+    \begin{itemize}
+        \item Managed node group: nodes managed by EKS
+        \item Self managed nodes: nodes managed by customer
+        \item Fargate: serverless
+    \end{itemize}
+    \item Data Storage
+    \begin{itemize}
+        \item AWS EBS
+        \item AWS EFS
+        \item AWS FSx
+    \end{itemize}
+\end{itemize}
+
 \end{document}
