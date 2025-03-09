@@ -160,6 +160,45 @@ but for access it should be added as a non key column.
 \end{itemize}
 
 
+\subsection{Database partitioning and sharding}
+\begin{center}
+    \begin{tabular}{ |c|c|c| }
+    \hline
+    & Partitioning & Sharding \\
+    \hline
+    \hline
+    Definition & Split table into subtables & Split tables across servers \\
+    \hline
+    Unit & Partition & Shards \\
+    \hline
+    Number of servers & Single & Multiple \\
+    \hline
+    Same table name & false & true \\
+    \hline
+    Client aware of & false & true \\
+    \hline
+    \end{tabular}
+\end{center}
+Horizontal partition: split rows into
+Vertical partitions: split columns into
+
+\begin{itemize}
+    \item Advantages
+    \begin{itemize}
+        \item Partitioning: Smaller indexes
+        \item Sharding: Scalability
+    \end{itemize}
+    \item Disadvantages
+    \begin{itemize}
+        \item Partitioning: Slow updates between partitions
+        \item Partitioning: Slower full table scan
+        \item Sharding: Highly coupled code
+        \item Sharding: Transactions are hard to implement
+        \item Sharding: Joins are hard to implement
+    \end{itemize}
+\end{itemize}
+
+
 \subsection{Reliability, Scalability and Mantainability}
 \begin{definition}[Reliability]
     Keep working with hardware, software and human errors. To implement is important to decouple and isolate components, seek faults over failure, make easy to do the right thing and discourage the wrong, make fast to roll back changes.
