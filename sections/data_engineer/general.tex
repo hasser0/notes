@@ -199,6 +199,32 @@ Vertical partitions: split columns into
 \end{itemize}
 
 
+\subsection{Databases locks}
+\begin{itemize}
+    \item Exclusive locks
+    \begin{itemize}
+        \item Prevent access(DML statements)
+        \item Once apply prevent other locks to acquire
+    \end{itemize}
+    \item Shared locks
+    \begin{itemize}
+        \item Prevent(insert, update, delete)
+        \item Once apply prevent exclusive locks to acquire
+    \end{itemize}
+    \item Dead locks
+    \begin{itemize}
+        \item begin t1
+        \item begin t2
+        \item t1 insert 20
+        \item t2 insert 21
+        \item t1 insert 21 (locked by t1)
+        \item t2 insert 20 (locked by t2)
+        \item both are dead lock
+        \item t2 fail last transaction entering dead lock
+    \end{itemize}
+\end{itemize}
+
+
 \subsection{Reliability, Scalability and Mantainability}
 \begin{definition}[Reliability]
     Keep working with hardware, software and human errors. To implement is important to decouple and isolate components, seek faults over failure, make easy to do the right thing and discourage the wrong, make fast to roll back changes.

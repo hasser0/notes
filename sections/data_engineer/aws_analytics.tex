@@ -1,0 +1,57 @@
+% !TEX root = ../../main.tex
+\documentclass[../../main.tex]{subfiles}
+
+\begin{document}
+
+\subsection{AWS Glue}
+
+\begin{itemize}
+    \item Serverless ETL
+    \item Components
+    \begin{itemize}
+        \item Data catalog
+        \item Connections
+        \item GLue ETL
+        \item Crawlers: Extract metadata from sources
+        \item Scheduler: Cron based or CloudWatch Events based
+    \end{itemize}
+    \item Data catalog
+    \begin{itemize}
+        \item Drop-in replacement for Hive
+        \item Can import Hive metastore
+        \item Update schemas and partitions from ETL or from crawlers
+    \end{itemize}
+    \item Glue ETL
+    \begin{itemize}
+        \item Fully managed ETL jobs
+        \item DynamicFrame alternative to DataFrame
+        \item Visual job creator, Scala or Python
+        \item Monitoring
+        \item Encryption at rest and in transit(SSL)
+        \item DPU(data processing units)
+        \item Data remains where it's discover
+        \item Create tables only in S3 and not nested schema
+        \item Integration to:
+        \begin{itemize}
+            \item Redshift
+            \item RDS
+            \item Athena
+            \item EMR
+            \item Kinesis
+            \item Kafka
+            \item S3
+        \end{itemize}
+    \end{itemize}
+    \item Data Quality Rules with DQDL(fail job or log to CloudWatch)
+    \item AWS Glue DataBrew: Visual data preparation tool
+    \item AWS Glue Workloads: Orchestration for Glue jobs and triggers
+    \item Cost
+    \begin{itemize}
+        \item Crawler by second
+        \item First million catalog objects free
+        \item Development endpoint by minute
+    \end{itemize}
+\end{itemize}
+
+
+\end{document}
