@@ -43,4 +43,15 @@ func main() {
 		fmt.Println("Osvaldo does not exist")
 	}
 
+	// Type struct
+	type person struct {
+		firstName string,
+		lastName string,
+	}
+
+	type employee struct {
+		person
+		employeeId int
+	}
+	anonStruct := struct{x int, y int}{x: 10, y: 10}
 }
