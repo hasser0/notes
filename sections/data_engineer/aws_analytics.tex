@@ -53,5 +53,241 @@
     \end{itemize}
 \end{itemize}
 
+\subsection{AWS Lake Formation}
+\begin{itemize}
+    \item Easier to setup a secure data Lake on top of Glue
+    \item It manage
+    \begin{itemize}
+        \item Security: Cross account access using AWS RAM
+        \item Security: Database, table, column, row and cell level security
+        \item Partitions
+        \item Encryption
+        \item Governed Tables with ACID Transactions: Extra cost
+    \end{itemize}
+    \item Pricing only for services used
+\end{itemize}
+
+\subsection{AWS Athena}
+\begin{itemize}
+    \item Serverless S3 query
+    \item Spark integration
+    \item Built on top of Presto
+    \item Manage users, permissions and resources with Athena Workgroups
+    \item Pricing per TB scanned
+    \item IAM, ACL, S3 bucket policy
+    \item Encryption on rest staging results
+    \item ACID Transactions with Apache Iceberg
+    \item Athena fine grain access - IAM based security for operations
+    \item Federated queries to query from many sources
+\end{itemize}
+
+\subsection{AWS EMR}
+\begin{itemize}
+    \item Managed Hadoop framework
+    \item Uses
+    \begin{itemize}
+        \item AWS EC2 instances
+        \item AWS VPC
+        \item AWS S3
+        \item AWS CloudWatch
+        \item AWS CloudTrail
+        \item AWS IAM
+        \item AWS Data Pipeline
+    \end{itemize}
+    \item HDFS - EBS ephemeral storage
+    \item EMRFS - S3 storage
+    \item Integration with Spark, HBase, Presto, Flink, Hive
+    \item Transient cluster
+    \item Charge by hour plus EC2 charges
+    \item EMR Managed scaling
+    \item EMR Serverless
+    \item EMR on EKS
+\end{itemize}
+
+\subsection{AWS Kinesis}
+\begin{itemize}
+    \item Real time ingestion
+    \item Producers:
+    \begin{itemize}
+        \item Kinesis SDK: record by record
+        \item Kinesis KPL: C++/Java sync/async, with buffer
+        \item Kinesis Agent
+        \item 3rd party
+        \item AWS IoT
+        \item AWS CloudWatch
+        \item Kinesis Data Analytics
+    \end{itemize}
+    \item Consumers:
+    \begin{itemize}
+        \item Kinesis KCL: Multiple programming languages
+        \item Kinesis Connector Library: Direct connector, deprecated by Data Firehose
+        \item Data Firehose
+        \item Kinesis Analytics
+        \item 3rd party
+        \item Lambda
+    \end{itemize}
+    \item Capacity modes:
+    \begin{itemize}
+        \item Provisioned: Choose number of shards
+        \item On demand mode: Autoscale
+    \end{itemize}
+    \item Retain data from 1 to 365 days
+    \item Scale by splitting and merging shards
+    \item Enhance Fan Out: Each consumer get 2MB/s per shard
+\end{itemize}
+
+\subsection{AWS Data Firehose}
+\begin{itemize}
+    \item Near real time ingestion
+    \item Connector directly:
+    \begin{itemize}
+        \item S3
+        \item Redshift
+        \item OpenSearch
+    \end{itemize}
+    \item Lambda processing in transit
+    \item Autoscaling
+    \item Use cases:
+    \begin{itemize}
+        \item Change file format
+        \item Compression
+    \end{itemize}
+    \item Buffer flushed by time and size rules
+\end{itemize}
+
+\begin{center}
+    \begin{tabular}{ |c|c|c| }
+    \hline
+    & AWS Kinesis & AWS Data Firehose \\
+    \hline
+    Storage & 1 to 365 days & None \\
+    \hline
+    Scaling & Split and merge shards & Fully managed serverless \\
+    \hline
+    \end{tabular}
+\end{center}
+
+\subsection{AWS Kinesis Data Analytics}
+\begin{itemize}
+    \item Process data in real time using SQL
+    \item Data from Kinesis Data Streams or Data Firehose
+    \item Deprecated in favor of MSAF
+\end{itemize}
+
+\subsection{AWS MASF}
+\begin{itemize}
+    \item Serverless Apache Flink
+    \item Java, Python, Scala, SQL
+    \item Use S3 to store flink jobs
+    \item Deprecated in favor of MSAF
+    \item Sources
+    \begin{itemize}
+        \item MSK
+        \item Kinesis
+    \end{itemize}
+    \item Sinks
+    \begin{itemize}
+        \item Firehose
+        \item Kinesis Streams
+        \item S3
+    \end{itemize}
+\end{itemize}
+
+\subsection{AWS MSK}
+\begin{itemize}
+    \item Fully managed Apache Kafka
+    \item Producers, consumers and topics
+    \item Choose number of AZ
+    \item Choose broker instance type
+    \item Data saved in EBS volumes
+    \item Security: Security groups, TLS and KMS
+    \item MSK Connect: Direct connector to AWS products
+    \item MSK Serverless: Define topics and partitions
+\end{itemize}
+
+\begin{center}
+    \begin{tabular}{ |c|c|c| }
+    \hline
+    & AWS Kinesis & AWS MSK \\
+    \hline
+    Message size & Max 1MB & Max 10MB \\
+    \hline
+    Queue names & Kinesis Data Streams & Kafka Topics \\
+    \hline
+    Units of scale & Shards & Partitions \\
+    \hline
+    Scaling & Split and merge shards & Add partitions \\
+    \hline
+    Security & IAM policies & IAM Access Control, Mutual TLS, SASL/SCRAM \\
+    \hline
+    \end{tabular}
+\end{center}
+
+\subsection{AWS OpenSearch}
+\begin{itemize}
+    \item Elasticsearch + Kibana(for dashboards)
+    \item Search engine, pipeline and analysis tool
+    \item Fully managed: Choose count and instance types
+    \item Serverless
+    \item Integrated with:
+    \begin{itemize}
+        \item S3 buckets using Lambda or Kinesis
+        \item Kinesis Data Streams
+        \item DynamoDB Streams
+        \item CloudWatch
+        \item CloudTrail
+    \end{itemize}
+    \item Security:
+    \begin{itemize}
+        \item Resource based policy
+        \item Identity based policy
+        \item IP based policy
+        \item Request signing
+        \item Can be put in a VPC
+        \item Integrates with Cognito for dashboards
+    \end{itemize}
+    \item Storage: Migrate data between storage
+    \begin{itemize}
+        \item Hot storage: EBS or Instance stores
+        \item Ultrawarm/Warm: S3 + caching
+        \item Cold storage: S3
+    \end{itemize}
+\end{itemize}
+
+\subsection{AWS Quicksight}
+\begin{itemize}
+    \item Serverless BI tools
+    \begin{itemize}
+        \item Visualizations
+        \item Paginated reports
+        \item Ad hoc analysis
+        \item Alerts on anomalies
+        \item Cross platform
+    \end{itemize}
+    \item Sources
+    \begin{itemize}
+        \item Redshift
+        \item Aurora/RDS
+        \item Athena
+        \item OpenSearch
+        \item S3 files
+    \end{itemize}
+    \item SPICE accelerate queries
+    \item Security
+    \begin{itemize}
+        \item MFA
+        \item VPC connectivity
+        \item Private network to VPC
+        \item Quicksight console manage
+        \item IAM policies restrict S3
+    \end{itemize}
+    \item ML: forecasting and anomalies
+    \item Access data only in the same region
+    \item Pricing
+    \begin{itemize}
+        \item Anual/Monthf subscription per user
+        \item Extra SPICE capacity
+    \end{itemize}
+\end{itemize}
 
 \end{document}
