@@ -1,0 +1,100 @@
+% !TEX root = ../../main.tex
+\documentclass[../../main.tex]{subfiles}
+
+\begin{document}
+
+\subsection{AWS SQS}
+\begin{itemize}
+    \item Fully managed Queue
+    \item Features:
+    \begin{itemize}
+        \item 256KB per message text
+        \item Delete message using id
+        \item Up to 15000 messages per second
+        \item Up to 14 days retantion
+        \item No limit queue size
+    \end{itemize}
+    \item FIFO Queue: Lower throughput, but with order
+    \item DLQ: Debugging wrong messages
+    \item Pricing: API request, network usage
+    \item Security: KMS, HTTPS, IAM policy, queue policy
+    \item Use cases
+    \begin{itemize}
+        \item Decoupling applications
+        \item Buffer writes to a database
+        \item blob data to S3 and metadata to SQS
+    \end{itemize}
+\end{itemize}
+
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+    \hline
+    & AWS SQS & AWS Kinesis \\
+    \hline
+    \hline
+    Data type & Text & Bytes \\
+    \hline
+    Message size & 256KB & 1MB \\
+    \hline
+    Ordering & Not default & Yes \\
+    \hline
+    Number apps & One & Multiple \\
+    \hline
+    Max retantion & 14 days & 356 days \\
+    \hline
+    \end{tabular}
+\end{center}
+\subsection{AWS SNS}
+
+\subsection{AWS SNS}
+\begin{itemize}
+    \item Publishers(CloudWatch, Budgets, Lambda, S3, CloudFormation, etc)
+    \item Subscribers(EMAIL, SMS, HTTP, Lambda, SQS, Data Firehose)
+    \item Topics
+    \item SNS FIFO
+    \item Message filtering
+    \item Security: TLS, KMS, IAM policies, topics policies
+    \item SNS + SQS Fan Out: send events to multiple SQS queues
+    \item SNS FIFO + SQS FIFO
+\end{itemize}
+
+\subsection{AWS Step Functions}
+\begin{itemize}
+    \item State machine(workflows)
+    \item State(single step)
+    \begin{itemize}
+        \item Task state
+        \item Choice state
+        \item Wait state
+        \item Parallel state
+        \item Map state
+    \end{itemize}
+    \item Features
+    \begin{itemize}
+        \item Advanced error handling
+        \item Audit workflow history
+    \end{itemize}
+\end{itemize}
+
+\subsection{AWS Appflow}
+\begin{itemize}
+    \item Fully managed SaaS integration with AWS
+    \item Define frequency
+    \item Apply in flight transformations
+\end{itemize}
+
+\subsection{AWS EventBridge}
+\begin{itemize}
+    \item Trigger events
+    \begin{itemize}
+        \item Based on cron schedule
+        \item Based on actions done
+    \end{itemize}
+\end{itemize}
+
+\subsection{AWS MWAA}
+\begin{itemize}
+    \item Fully managed Apache Airflow
+    \item Uses S3 for code upload
+\end{itemize}
+\end{document}
