@@ -1,0 +1,178 @@
+% !TEX root = ../../main.tex
+\documentclass[../../main.tex]{subfiles}
+
+\begin{document}
+
+\subsection{General advice}
+\begin{itemize}
+    \item Least Privilege Principle
+    \item Start with broad priviledges and refine on the process(IAM Access Analyzer)
+    \item Mask PII and sensitive data
+    \item Key salting(append random text before hashing to avoid rainbow table attack)
+    \item Unique salt per information
+    \item Keep data in compliant regions
+\end{itemize}
+
+\subsection{AWS IAM}
+\begin{itemize}
+    \item Users and groups
+    \item Policies(Permissions)
+    \item Roles(for AWS Services)
+    \item MFA
+    \item Password Policies
+\end{itemize}
+
+\subsection{AWS KMS}
+\begin{itemize}
+    \item KMS key key policy
+    \item AWS owned keys(fully managed services)
+    \item AWS managed keys(managed services)
+    \item Customer managed keys(customer managed)
+    \item Snapshots of encrypted data is managed with different keys
+    \item Automatic rotation
+\end{itemize}
+
+\subsection{AWS Other Security Services}
+\begin{itemize}
+    \item AWS Macie: ML and pattern matching PII data
+    \item AWS Secrets Manager: Storing secrets
+    \item AWS Shield
+    \item AWS WAF
+    \begin{itemize}
+        \item ALB, API Gateway, CloudFront
+        \item Web ACL
+    \end{itemize}
+\end{itemize}
+
+\subsection{AWS Service Security}
+\begin{itemize}
+    \item Kinesis Data Streams
+    \begin{itemize}
+        \item SSL through HTTPS
+        \item KMS SSE
+        \item VPC Endpoint / Private Link
+    \end{itemize}
+    \item Kinesis Data Analytics
+    \begin{itemize}
+        \item IAM role to read from Kinesis Data Streams
+    \end{itemize}
+    \item Data Firehose
+    \begin{itemize}
+        \item IAM roles to deliver S3, Redshift, OpenSearch
+        \item KMS SSE
+        \item VPC Endpoint / Private Link
+    \end{itemize}
+    \item SQS
+    \begin{itemize}
+        \item IAM policy
+        \item SSL through HTTPS
+        \item KMS SSE
+        \item SQS queue access policy
+        \item VPC Endpoint
+    \end{itemize}
+    \item IoT
+    \begin{itemize}
+        \item IoT policy
+        \item Cognito identities
+    \end{itemize}
+    \item IAM Policy: Attach to users, groups or roles
+    \item S3
+    \begin{itemize}
+        \item IAM policy
+        \item S3 bucket policies
+        \item ACL
+        \item SSL through HTTPS
+        \item KMS SSE
+        \item S3 SSE
+        \item Customer SSE
+        \item Versioning
+        \item CORS
+        \item WORM
+        \item VPC endpoint using Gateway
+    \end{itemize}
+    \item DynamoDB
+    \begin{itemize}
+        \item IAM policy
+        \item SSL through HTTPS
+        \item KMS SSE
+        \item DynamoDB SSE
+        \item Customer SSE
+        \item DynamoDB Streams encrypted
+        \item VCP endpoint using Gateway
+    \end{itemize}
+    \item RDS / Aurora
+    \begin{itemize}
+        \item IAM policy
+        \item IAM authentication
+        \item Manage database objects permissions within database
+        \item VPC isolation
+        \item Security groups
+        \item KMS SSE
+        \item SSL through HTTPS
+    \end{itemize}
+    \item Lambda
+    \begin{itemize}
+        \item IAM role to define lambda function permissions
+        \item VPC endpoint
+    \end{itemize}
+    \item Glue
+    \begin{itemize}
+        \item IAM policy
+        \item SSL through JDBC
+        \item KMS SSE catalog
+        \item KMS SSE passwords
+        \item KMS SSE data
+        \item S3 SSE data
+        \item Resources policies
+    \end{itemize}
+    \item EMR
+    \begin{itemize}
+        \item IAM role for EC2 instances to S3
+        \item IAM role for DynamoDB scans through Hive
+        \item EC2 security groups
+        \item EC2 key pair SSH credentials
+        \item LUKS or NVMe encrypt Instance store
+        \item KMS SSE EBS volume
+        \item KMS SSE EMRFS
+        \item S3 SSE EMRFS
+        \item HDFS encryption
+        \item TLS through HTTPS
+    \end{itemize}
+    \item OpenSearch
+    \begin{itemize}
+        \item IAM authentication
+        \item Cognito authentication
+        \item VPC endpoint
+        \item OpenSearch policy
+        \item KMS SSE
+        \item TLS through HTTPS
+    \end{itemize}
+    \item Redshift
+    \begin{itemize}
+        \item VPC endpoint
+        \item IAM role for COPY or UNLOAD commands
+        \item Cluster security groups
+        \item SSL through JDBC
+        \item KMS SSE
+        \item HSM SSE
+    \end{itemize}
+    \item Athena
+    \begin{itemize}
+        \item IAM policy
+        \item S3 security
+        \item S3 encryption options
+        \item TLS through JDBC
+        \item AWS Glue Catalog fine grain permissions
+    \end{itemize}
+    \item Quicksight
+    \begin{itemize}
+        \item IAM users
+        \item Email based accounts
+        \item Row and column level security
+        \item MFA(enterprise)
+        \item Active directory(enterprise)
+        \item Federated login(enterprise)
+    \end{itemize}
+\end{itemize}
+
+\end{document}
