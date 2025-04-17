@@ -3,6 +3,33 @@
 
 \begin{document}
 
+\subsection{Processing}
+Data systems can be classified into three types by data access patterns and processing
+\begin{itemize}
+    \item Online systems.
+    \item Batch processing systems.
+    \item Streaming processing systems.
+\end{itemize}
+Online systems fetchs/process small amounts of data constantly usually on transactional
+systems. Batch processing systems fetch vast amounts of data on a schedule, process it
+and store it for later use. Streaming processing systems is an intermediate state
+between batch processing and online systems.
+
+UNIX tools is an example of well design that have been used for decades and still
+relevant for many use cases. UNIX phylosophy encourage programmer
+\begin{itemize}
+    \item Files is the common input/output interface whether it is a unix socket
+        a device, a file, stdin or stdout.
+    \item Create specialize well written and optimal programs to do a single task.
+    \item Do not extend tools, rather create another.
+    \item The input of an specific job is the output of another.
+\end{itemize}
+This set of rules can be summarized and extended to other frameworks as
+\begin{itemize}
+    \item Separate logic from wiring.
+    \item Source data and intermediate states should be immutable.
+\end{itemize}
+
 
 \subsection{Reliability, Scalability and Mantainability}
 \begin{definition}[Reliability]
