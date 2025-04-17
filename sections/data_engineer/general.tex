@@ -4,6 +4,53 @@
 \begin{document}
 
 
+\subsection{Reliability, Scalability and Mantainability}
+\begin{definition}[Reliability]
+    Keep working with hardware, software and human errors. To implement is important to decouple and isolate components, seek faults over failure, make easy to do the right thing and discourage the wrong, make fast to roll back changes.
+\end{definition}
+\begin{definition}[Scalability]
+    Reasonable ways to deal with grows. To implement reliability is important to describe with metrics.
+\end{definition}
+\begin{definition}[Maintainability]
+    It is divided into three parts
+    \begin{itemize}
+        \item Operability: Make operations easy. To implement track problem causes, automate deployment, define process.
+        \item Simplicity: Easy for new engineers to understand. To implement seek abstraction over hardcode.
+        \item Evolvability: Make easy for engineers to make changes.
+    \end{itemize}
+\end{definition}
+
+
+\subsection{Database internals}
+\begin{itemize}
+    \item Elements
+    \begin{itemize}
+        \item Row id: Database internal id for each row, possibly independent of business id
+        \item Page: Fundamental unit of storage. Can store tables, rows, columns, indexes, sequences, documents, etc. Pages are read by filename, by offset and by length and this is why fixed size data types is better than variable lenght size data types.
+        \item Primary key: Piece of data that uniquely identifies it.
+        \item Heap: Structure to store tables as pages
+        \item Index: Structure that enhance data access
+    \end{itemize}
+\end{itemize}
+Types of databases
+\begin{center}
+    \begin{tabular}{ |c|c|c| }
+    \hline
+    & Row store & Column store \\
+    \hline
+    \hline
+    System type & OLTP & OLAP \\
+    \hline
+    Optimize for & Read/Write & Aggregation/Compression \\
+    \hline
+    Slow at & Aggregation/Compression & Read/Write \\
+    \hline
+    Multicolumns & Efficient & Inefficient \\
+    \hline
+    \end{tabular}
+\end{center}
+
+
 \subsection{Databases - ACID}
 \begin{definition}[Transaction]
     Collection of queries treated as a unit of work.
@@ -30,32 +77,60 @@
     \end{itemize}
 \end{definition}
 
+
 \begin{definition}[Isolation]
-    When multiple transactions read and write at the same time, inconsistency in the share data may arise. Therefore, run transactions in isolation one from others is very important
-    \begin{itemize}
-        \item Isolation problems
-        \begin{itemize}
-            \item Dirty reads: uncommitted data
-            \item Non repeatable reads: committed updates(same rows)
-            \item Phantom reads: committed inserts/deletes(new rows or removed rows)
-            \item Lost updates: updating at the exact same time
-        \end{itemize}
-        \item Isolation levels
-        \begin{itemize}
-            \item Read uncommitted: -
-            \item Read committed: dirty reads
-            \item Repeatable read: dirty reads, non repeatable reads
-            \item Snapshot: dirty reads, non reapetable reads, phantom reads
-            \item Serializable: dirty reads, non repeatable reads, phantom reads, lost updates
-        \end{itemize}
-        \item Locks
-        \begin{itemize}
-            \item pessimistic(row level, table level, page level)
-            \item optimistic(no locks)
-            \item repeatable reads lock
-        \end{itemize}
-    \end{itemize}
+    When multiple transactions read and write at the same time, inconsistency in the
+    share data may arise. Therefore, run transactions in isolation one from others is
+    very important
 \end{definition}
+Isolation is easy to handle for single thread applications, however accesing it in
+concurrent mode may arise so called raced conditions:
+\begin{itemize}
+    \item Dirty reads:
+        A transaction reads data modified by other transactions, but not yet committed
+    \item Dirty writes:
+        A transaction write data modified by other transactions, but not yet committed
+    \item Read skew aka non repeatable reads:
+        A transaction reads data from multiple rows before and after being modified and
+        committed by other transactions(same row ids are retrieve with different values)
+    \item Lost updates:
+        One transaction's update to a record is overwritten by another transaction's
+        update. Usually appears on read modify write patterns
+    \item Write skew:
+        A transaction updates a row based upon stale data
+    \item Phantom reads:
+        A transaction reads a set of rows and then new rows appear that were not present
+        during the first read
+\end{itemize}
+To adress this problem we can implement either weak isolation levels(solve only a subset
+of the isolation problems) or serializable isolation aka strong isolation levels (solve
+all isolation problems):
+\begin{itemize}
+    \item Weak isolation levels:
+    \begin{itemize}
+        \item Read uncommitted
+        \item Read committed
+        \item Reapetable read
+        \item Snapshot isolation
+    \end{itemize}
+    \item Strong isolation
+\end{itemize}
+each of these levels have multiple implementations. For serializable isolation exists
+three main options
+\begin{itemize}
+    \item Actual serial execution
+    \item Two phase locking(2PL) or pessimistic locking
+    \item Serializable snapshot isolation or optimistic locking
+\end{itemize}
+Actual serial execution is run in a single thread. Two phase locking is a serializable
+isolation implementation that consists in two types of locks:
+\begin{itemize}
+    \item Exclusive locks: prevent other process to access
+    \item Share locks: prevent exclusive locks and data modification
+\end{itemize}
+Serializable snapshot isolation only check for serializable execution when the
+transaction wants to commit, allowing transactions to proceed without blocking.
+
 
 \begin{definition}[Durability]
     Changes made by committed transactions must be persisted in a durable non-volatile storage
@@ -65,41 +140,6 @@
         \item Append only file
     \end{itemize}
 \end{definition}
-
-\begin{definition}[Eventually consistent]
-    Whenever a database is in two or more different places(replication, caching distributed) it becomes inconsistent in reads. The system will replicate the change and become eventually consistent.
-\end{definition}
-
-
-\subsection{Database internals}
-\begin{itemize}
-    \item Elements
-    \begin{itemize}
-        \item Row id: Database internal id for each row, possibly independent of business id
-        \item Page: Fundamental unit of storage. Can store tables, rows, columns, indexes, sequences, documents, etc. Pages are read by filename, by offset and by length and this is why fixed size data types is better than variable lenght size data types.
-        \item Primary key: Piece of data that uniquely identifies it.
-        \item Heap: Structure to store tables as pages
-        \item Index: Structure that enhance data access
-    \end{itemize}
-\end{itemize}
-
-Types of databases
-\begin{center}
-    \begin{tabular}{ |c|c|c| }
-    \hline
-    & Row store & Column store \\
-    \hline
-    \hline
-    System type & OLTP & OLAP \\
-    \hline
-    Optimize for & Read/Write & Aggregation/Compression \\
-    \hline
-    Slow at & Aggregation/Compression & Read/Write \\
-    \hline
-    Multicolumns & Efficient & Inefficient \\
-    \hline
-    \end{tabular}
-\end{center}
 
 
 \subsection{Database Indexing}
@@ -160,95 +200,61 @@ but for access it should be added as a non key column.
 \end{itemize}
 
 
-\subsection{Database partitioning and sharding}
-\begin{center}
-    \begin{tabular}{ |c|c|c| }
-    \hline
-    & Partitioning & Sharding \\
-    \hline
-    \hline
-    Definition & Split table into subtables & Split tables across servers \\
-    \hline
-    Unit & Partition & Shards \\
-    \hline
-    Number of servers & Single & Multiple \\
-    \hline
-    Same table name & false & true \\
-    \hline
-    Client aware of & false & true \\
-    \hline
-    \end{tabular}
-\end{center}
-Horizontal partition: split rows into
-Vertical partitions: split columns into
-
+\subsection{Database partitioning}
+Partition is a technique storage systems that split data, possibly different machines,
+to enhance scalability, reliability and improve performance for specific types of
+queries by reducing the number of data that needs to be read. There are three main
+strategies:
 \begin{itemize}
-    \item Advantages
-    \begin{itemize}
-        \item Partitioning: Smaller indexes
-        \item Sharding: Scalability
-    \end{itemize}
-    \item Disadvantages
-    \begin{itemize}
-        \item Partitioning: Slow updates between partitions
-        \item Partitioning: Slower full table scan
-        \item Sharding: Highly coupled code
-        \item Sharding: Transactions are hard to implement
-        \item Sharding: Joins are hard to implement
-    \end{itemize}
+    \item By hash
+    \item By value
+    \item By range
 \end{itemize}
-
-
-\subsection{Databases locks}
-\begin{itemize}
-    \item Exclusive locks
-    \begin{itemize}
-        \item Prevent access(DML statements)
-        \item Once apply prevent other locks to acquire
-    \end{itemize}
-    \item Shared locks
-    \begin{itemize}
-        \item Prevent(insert, update, delete)
-        \item Once apply prevent exclusive locks to acquire
-    \end{itemize}
-    \item Dead locks
-    \begin{itemize}
-        \item begin t1
-        \item begin t2
-        \item t1 insert 20
-        \item t2 insert 21
-        \item t1 insert 21 (locked by t1)
-        \item t2 insert 20 (locked by t2)
-        \item both are dead lock
-        \item t2 fail last transaction entering dead lock
-    \end{itemize}
-\end{itemize}
+When the data is split across multiple servers it's called sharding
 
 
 \subsection{Databases replication}
+Replication is a technique in distributed systems that consists in data duplication
+across nodes mainly, aiming for scalability, durability and availability. There are
+three main strategies:
 \begin{itemize}
-    \item Master - Stand by or Master backup replication
-    \item Multi master replication
-    \item Synchoronous replication: replicates before commit
-    \item Asynchoronous replication: replicates after commitff
+    \item Leader - follower
+    \item Multileader
+    \item Leaderless
+\end{itemize}
+On a leader follower architecture writes are handle by a single central node, called
+leader, which handles replication to the other nodes, called followers. On a multi
+leader architecture, writes can be handle by multiple nodes. Finally, on leaderless
+architecture all writes can be handle by all nodes without a specific leader.
+
+Data changes must be encoded in some format:
+\begin{itemize}
+    \item Statement based: Transfer modification instructions
+    \item WAL based: Transfer the changes made in the leader
+    \item Logical based: Transfer modification instructions, removing non deterministic behaviour
+    \item Trigger based: Custom logic
 \end{itemize}
 
+There are two different orders for replication and user notification:
+\begin{itemize}
+    \item Synchoronous replication: replication before user notification
+    \item Asynchoronous replication: replication after user notification
+\end{itemize}
+Replication across the entire system mix this techniques, yielding:
+\begin{itemize}
+    \item Synchoronous: Acknowledge only after data is replicated to all nodes
+    \item Asynchoronous: Acknowledge before data is replicated to all nodes
+    \item Semi synchronous: Acknowledge after data is replicated to a fixed amount of
+        nodes
+    \item Chain synchronous: Acknowledge after data is replicated to next node in chain
+    \item Quorum consistency: Acknowledge to w nodes such that $w + r > n$, where $w$ is
+        the number of write acknowledge, $r$ is the number of read replicas per request
+        and $n$ is the number of total nodes
+\end{itemize}
 
-\subsection{Reliability, Scalability and Mantainability}
-\begin{definition}[Reliability]
-    Keep working with hardware, software and human errors. To implement is important to decouple and isolate components, seek faults over failure, make easy to do the right thing and discourage the wrong, make fast to roll back changes.
-\end{definition}
-\begin{definition}[Scalability]
-    Reasonable ways to deal with grows. To implement reliability is important to describe with metrics.
-\end{definition}
-\begin{definition}[Maintainability]
-    It is divided into three parts
-    \begin{itemize}
-        \item Operability: Make operations easy. To implement track problem causes, automate deployment, define process.
-        \item Simplicity: Easy for new engineers to understand. To implement seek abstraction over hardcode.
-        \item Evolvability: Make easy for engineers to make changes.
-    \end{itemize}
-\end{definition}
+Multileader and leaderless replication need to handle conflict resolution and exists
+multiple strategies, being LWW(Last Write Wins) the most common.
+
 
 
 \end{document}

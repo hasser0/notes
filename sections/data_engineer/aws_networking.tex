@@ -1,0 +1,53 @@
+% !TEX root = ../../main.tex
+\documentclass[../../main.tex]{subfiles}
+
+\begin{document}
+
+\subsection{AWS VPC}
+\begin{itemize}
+    \item Components:
+    \begin{itemize}
+        \item VPC: Private network to deploy resources
+        \item Subnets: Partition of network(private or public)
+        \item Internet Gateway: Connect VPC to internet
+        \item NAT Gateway: Connect private subnets to internet
+        \item Security groups: Firewall rules at instance level
+        \item NACL: Firewall rules at subnet level
+        \item VPC Flow Logs: Traffic logs, dump to S3, CloudWatch or Data Firehose
+        \item VPC Peering: Connect two VPC through private network
+        \item VPC Endpoints: Connect VPC with AWS services through private network
+        \item VPC Endpoints Gateway: VPC Endpoints for S3 and DynamoDB
+        \item VPC Endpoints Interface: VPC Endpoints for most AWS services
+        \item Site to Site VPN: Connect on premises network with VPC through public internet
+        \item Direct Connect: Connect on premises network with VPC through physical private connection
+        \item Private Link: Scale VPC Peering to 1000s of VPCs
+    \end{itemize}
+\end{itemize}
+
+\subsection{AWS Route53}
+\begin{itemize}
+    \item Fully managed DNS Service
+    \item Record types:
+    \begin{itemize}
+        \item A: hostname to IPv4
+        \item AAAA: hostname to IPv6
+        \item CNAME: hostname to hostname
+        \item NS: Hosted zones
+    \end{itemize}
+    \item Public Hosted zones: container with information about routing from internet to domains
+    \item Private Hosted zones: container with information about routing private services within VPC
+\end{itemize}
+
+\subsection{AWS CloudFront}
+\begin{itemize}
+    \item CDN
+    \item Protect with AWS Shield and AWS WAF
+    \item Origin Access Control(OAC)
+    \item Origins
+    \begin{itemize}
+        \item S3 bucket
+        \item Custom HTTP Endpoint
+    \end{itemize}
+\end{itemize}
+
+\end{document}

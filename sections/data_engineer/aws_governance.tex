@@ -1,0 +1,106 @@
+% !TEX root = ../../main.tex
+\documentclass[../../main.tex]{subfiles}
+
+\begin{document}
+
+\subsection{AWS CloudWatch}
+\begin{itemize}
+    \item CloudWatch Metrics
+    \begin{itemize}
+        \item Metrics for every AWS Service
+        \item Can create custom metrics
+        \item Can be split by dimension
+        \item Near real-time with Data Firehose or 3rd party
+        \item Destination
+        \begin{itemize}
+            \item S3
+            \item Redshift
+        \end{itemize}
+    \end{itemize}
+    \item CloudWatch Logs
+    \begin{itemize}
+        \item Log groups, representig an application
+        \item Log stream: single files in log groups
+        \item Define Log expiration policies
+        \item Sources
+        \begin{itemize}
+            \item SDK
+            \item CloudWatch
+            \item ECS
+            \item Elastic Beanstalk
+            \item CloudWatch Logs Agents
+            \item CloudWatch Logs Unified Agents
+            \item VPC Flow Logs
+            \item API Gateway
+            \item CloudTrail
+            \item Route53
+        \end{itemize}
+        \item Destination
+        \begin{itemize}
+            \item S3
+            \item Kinesis Streams
+            \item Data Firehose
+            \item Lambda
+            \item OpenSearch
+        \end{itemize}
+        \item Encrypted by default
+    \end{itemize}
+    \item CloudWatch Alarms
+    \begin{itemize}
+        \item Trigger notification for any metric
+        \item Agg functions and timelapse
+        \item Can work on top of CloudWatch Logs Metrics Filters
+        \item Composite Alarms: summarize multiple alarms to a single alarm
+        \item Targets
+        \begin{itemize}
+            \item EC2 states
+            \item ASG scaling action
+            \item SNS
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\subsection{AWS CloudTrail}
+\begin{itemize}
+    \item Governance compliance and audit
+    \item Multi-region or single region
+    \item Can be dumped to CloudWatch or S3
+    \item Types of events:
+    \begin{itemize}
+        \item Management Events: Not intensive API calls
+        \item Data Events: Intensive API calls
+        \item CloudTrail Insight Events: High level unusual activity
+    \end{itemize}
+    \item Retention 90 days
+    \item S3 + Athena after 90 days
+    \item CloudTrail Lake: Managed data lake for CloudTrail Events
+\end{itemize}
+
+\subsection{AWS Others}
+\begin{itemize}
+    \item AWS Config
+    \begin{itemize}
+        \item Audit and record compliance of AWS resources
+        \item Create custom configuration rules
+        \item Automate remediation for non compliant resourcesf
+        \item Record configuration changes
+    \end{itemize}
+    \item AWS SSM Parameter Store: Secure storage for configuration and secrets
+    \item AWS Managed Grafana: Visualize, monitor and alert on metrics and logs
+    \item AWS CloudFormation: Infrastructure as code using yaml
+    \item AWS Budgets: Set alarms when costs exceeds budget
+    \item AWS Cost Explorer: Visualize and analyze costs(include forecasts)
+    \item AWS API Gateway: Expose any AWS service
+    \begin{itemize}
+        \item Version support
+        \item Security: IAM Roles, Cognito or custom authorizer
+        \item Custom domain name
+        \item Caching
+        \item TLS support
+        \item WebSocket support
+        \item Authentication and authorization
+        \item Lambda Function and HTTP endpoints
+    \end{itemize}
+\end{itemize}
+
+\end{document}
